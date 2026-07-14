@@ -1,9 +1,9 @@
 <?php
 // Load config and database first so env constants are available
-require_once "../config/config.php";
-require_once "../config/database.php";
-require_once "../app/models/SchemaBootstrap.php";
-require_once "../app/core/Router.php";
+require_once __DIR__ . "/../config/config.php";
+require_once __DIR__ . "/../config/database.php";
+require_once __DIR__ . "/../app/models/SchemaBootstrap.php";
+require_once __DIR__ . "/../app/core/Router.php";
 
 // public/index.php
 define('BASE_PATH', realpath(__DIR__ . '/..'));  // points to project root FYP-UMT

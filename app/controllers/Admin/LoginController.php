@@ -122,7 +122,7 @@ class LoginController {
                     $mail = new PHPMailer(true);
                     try {
                         if (empty(MAIL_USERNAME)) {
-                            throw new Exception('SMTP not configured');
+                            throw new \Exception('SMTP not configured');
                         }
                         $mail->Timeout = 3;
                         $mail->isSMTP();
@@ -155,7 +155,7 @@ class LoginController {
 
                         $mail->send();
                         $_SESSION['forgot_success'] = "One-Time Password (OTP) has been sent to your administrator Gmail.";
-                    } catch (Exception $e) {
+                    } catch (\Throwable $e) {
                         // Offline simulator helper
                         $_SESSION['forgot_success'] = "One-Time Password (OTP) has been generated: <strong>{$otp}</strong> (Email system simulation fallback enabled)";
                     }

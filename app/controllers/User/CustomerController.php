@@ -247,7 +247,10 @@ class CustomerController {
             exit;
         }
 
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { return; }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: " . url("") . "customer_forgot_password");
+            exit;
+        }
 
         $step = $_SESSION['reset_step_customer'] ?? 'request';
 
@@ -272,7 +275,7 @@ class CustomerController {
             $mail = new PHPMailer(true);
             try {
                 if (empty(MAIL_USERNAME)) {
-                    throw new Exception('SMTP not configured');
+                    throw new \Exception('SMTP not configured');
                 }
                 $mail->Timeout = 3;
                 $mail->isSMTP();
@@ -320,7 +323,7 @@ class CustomerController {
 
                 $_SESSION['forgot_success'] = "A verification code has been sent to {$email}. Please enter it below within 60 seconds.";
 
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 // Fallback for cloud platforms or missing SMTP configs: display OTP clearly in success alert so user can verify immediately
                 $_SESSION['forgot_success'] = "Verification code generated: <strong>{$otp}</strong> (Email system simulation fallback enabled due to cloud firewall). Valid for 60 seconds.";
             }
@@ -392,6 +395,9 @@ class CustomerController {
             header("Location: " . url("") . "customer_forgot_password");
             exit;
         }
+
+        header("Location: " . url("") . "customer_forgot_password");
+        exit;
     }
 }
 ?>

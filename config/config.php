@@ -126,8 +126,8 @@ define('CHATBOT_API_TOKEN',   env('CHATBOT_API_TOKEN',   ''));
 // ── Mail ─────────────────────────────────────────────────────────────────────
 define('MAIL_HOST',       env('MAIL_HOST',       'smtp.gmail.com'));
 define('MAIL_PORT',       (int) env('MAIL_PORT', 587));
-define('MAIL_USERNAME',   env('MAIL_USERNAME',   ''));
-define('MAIL_PASSWORD',   env('MAIL_PASSWORD',   ''));
+define('MAIL_USERNAME',   env('MAIL_USERNAME',   'stitchsmartofficial@gmail.com'));
+define('MAIL_PASSWORD',   env('MAIL_PASSWORD',   'hsyqeqetbfyeqisp'));
 define('MAIL_ENCRYPTION', env('MAIL_ENCRYPTION', 'tls'));
 define('MAIL_FROM_NAME',  env('MAIL_FROM_NAME',  APP_NAME));
 

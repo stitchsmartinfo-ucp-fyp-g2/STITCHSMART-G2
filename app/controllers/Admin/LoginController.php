@@ -124,7 +124,7 @@ class LoginController {
                         if (empty(MAIL_USERNAME)) {
                             throw new \Exception('SMTP not configured');
                         }
-                        $mail->Timeout = 3;
+                        $mail->Timeout = 15;
                         $mail->isSMTP();
                         $mail->Host = MAIL_HOST;
                         $mail->SMTPAuth = true;

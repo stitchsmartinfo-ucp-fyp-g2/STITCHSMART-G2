@@ -50,11 +50,21 @@ $rawAppUrl = (string) env('APP_URL', 'http://localhost:8000/');
 if (env('RAILWAY_STATIC_URL')) {
     $rawAppUrl = env('RAILWAY_STATIC_URL');
 } elseif (env('RAILWAY_PUBLIC_DOMAIN')) {
-    $rawAppUrl = 'https://' . env('RAILWAY_PUBLIC_DOMAIN');
+    $rawAppUrl = env('RAILWAY_PUBLIC_DOMAIN');
 } elseif (!empty($_SERVER['HTTP_HOST']) && (str_contains($_SERVER['HTTP_HOST'], 'railway.app') || env('RAILWAY_ENVIRONMENT'))) {
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ? 'https://' : 'http://';
     $rawAppUrl = $protocol . $_SERVER['HTTP_HOST'];
 }
+
+// Ensure protocol (http:// or https://) is always prepended if missing
+if (!str_starts_with($rawAppUrl, 'http://') && !str_starts_with($rawAppUrl, 'https://')) {
+    if (str_contains($rawAppUrl, 'localhost') || str_contains($rawAppUrl, '127.0.0.1')) {
+        $rawAppUrl = 'http://' . ltrim($rawAppUrl, '/');
+    } else {
+        $rawAppUrl = 'https://' . ltrim($rawAppUrl, '/');
+    }
+}
+
 $baseUrl = rtrim($rawAppUrl, '/') . '/';
 define('BASE_URL', $baseUrl);
 

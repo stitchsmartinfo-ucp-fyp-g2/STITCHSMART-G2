@@ -10,6 +10,14 @@ $rawUri = $_SERVER['REQUEST_URI'] ?? '/';
 $rawUri = '/' . ltrim($rawUri, '/');
 $uri = urldecode(parse_url($rawUri, PHP_URL_PATH));
 $uri = preg_replace('#/+#', '/', $uri);
+
+if (!empty($_SERVER['HTTP_HOST']) && str_starts_with($uri, '/' . $_SERVER['HTTP_HOST'])) {
+    $uri = substr($uri, strlen('/' . $_SERVER['HTTP_HOST']));
+    if ($uri === '' || $uri === false) {
+        $uri = '/';
+    }
+}
+
 $path = __DIR__ . $uri;
 
 // Serve static files directly if they exist in the root or public folders

@@ -582,25 +582,17 @@ private function sendRestockRequestMail($product)
 
     $mail = new PHPMailer(true);
     try {
+        $mail->Timeout = 15;
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        $mail->Host     = MAIL_HOST;
         $mail->SMTPAuth = true;
-        $mail->Username = 'stitchsmartofficial@gmail.com';
-        $mail->Password = 'hsyqeqetbfyeqisp';
+        $mail->Username = MAIL_USERNAME;
+        $mail->Password = MAIL_PASSWORD;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port     = MAIL_PORT;
 
-        // Fix for Localhost / XAMPP SSL Certificate issues
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            ]
-        ];
-
-        $mail->setFrom('stitchsmartofficial@gmail.com', 'Stock Restock Alert');
-        $mail->addAddress('stitchsmartofficial@gmail.com', 'Stitch Smart Admin');
+        $mail->setFrom(MAIL_USERNAME, 'Stock Restock Alert');
+        $mail->addAddress(MAIL_USERNAME, 'Stitch Smart Admin');
 
         $mail->isHTML(true);
         $mail->Subject = "Restock Needed: " . $product['name'] . " (Out of Stock)";

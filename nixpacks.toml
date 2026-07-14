@@ -1,4 +1,13 @@
-providers = ["php"]
+providers = ["php", "python"]
+
+[phases.setup]
+nixPkgs = ["php82", "php82Extensions.mysqli", "php82Extensions.curl", "php82Extensions.mbstring", "python311", "python311Packages.pip"]
+
+[phases.install]
+cmds = [
+    "composer install --no-dev --ignore-platform-reqs || true",
+    "pip install --break-system-packages -r FYP-Chatbot/FYP-Chatbot/requirements.txt || true"
+]
 
 [start]
-cmd = "php -S 0.0.0.0:$PORT router.php"
+cmd = "cd FYP-Chatbot/FYP-Chatbot && (uvicorn app.main:app --host 127.0.0.1 --port 5000 &) && cd /app && php -S 0.0.0.0:$PORT router.php"

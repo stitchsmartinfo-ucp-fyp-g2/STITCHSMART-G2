@@ -13,6 +13,8 @@ class ChatController {
 
     // Called by AJAX when user sends a message
     public function send() {
+        error_reporting(E_ERROR);
+        ini_set('display_errors', '0');
         header('Content-Type: application/json');
 
         if (session_status() === PHP_SESSION_NONE) {
@@ -51,6 +53,8 @@ class ChatController {
 
     // Called by AJAX when user clicks a product
     public function similarProducts() {
+        error_reporting(E_ERROR);
+        ini_set('display_errors', '0');
         header('Content-Type: application/json');
         
         $productId = (int)($_POST['product_id'] ?? 0);
@@ -95,6 +99,8 @@ class ChatController {
     // Save a chat message (role: 'user'|'bot') — only for logged-in users
     public function saveChat()
     {
+        error_reporting(E_ERROR);
+        ini_set('display_errors', '0');
         header('Content-Type: application/json');
 
         if (session_status() === PHP_SESSION_NONE) session_start();
@@ -128,6 +134,8 @@ class ChatController {
     // Get recent chat history for logged-in user
     public function getChatHistory()
     {
+        error_reporting(E_ERROR);
+        ini_set('display_errors', '0');
         header('Content-Type: application/json');
         if (session_status() === PHP_SESSION_NONE) session_start();
         $userId = $_SESSION['customer_id'] ?? null;

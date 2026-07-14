@@ -27,6 +27,18 @@ class Router
         $csrfExemptRoutes = $apiConfig['csrf_exempt'] ?? [];
 
         // 1. Resolve Route & Enforce Access Control
+        if ($page === 'favicon.ico') {
+            $faviconPath = $baseDir . '/public/pictures/stitchsmart_luxury_icon.svg';
+            if (file_exists($faviconPath)) {
+                header('Content-Type: image/svg+xml; charset=utf-8');
+                header('Cache-Control: public, max-age=86400');
+                readfile($faviconPath);
+                exit;
+            }
+            header("HTTP/1.0 404 Not Found");
+            exit;
+        }
+
         $route = null;
 
         if (isset($webRoutes[$page])) {

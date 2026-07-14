@@ -197,6 +197,7 @@ class DashboardController {
         }
 
         $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
 
         try {
             $mail->isSMTP();
@@ -328,6 +329,7 @@ class DashboardController {
         }
 
         $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
 
         try {
             // SMTP Settings

@@ -63,6 +63,7 @@ class NewsletterController {
     private function sendSubscriberConfirmationEmail(string $email): void {
         try {
             $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
             $mail->isSMTP();
             $mail->Host = MAIL_HOST;
             $mail->SMTPAuth = true;
@@ -95,6 +96,7 @@ class NewsletterController {
     private function sendAdminNotificationEmail(string $email): void {
         try {
             $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
             $mail->isSMTP();
             $mail->Host = MAIL_HOST;
             $mail->SMTPAuth = true;

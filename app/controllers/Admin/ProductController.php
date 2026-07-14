@@ -570,6 +570,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
             foreach ($subscribers as $subscriberEmail) {
                 try {
                     $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
                     $mail->isSMTP();
                     $mail->Host = MAIL_HOST;
                     $mail->SMTPAuth = true;
@@ -609,6 +610,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
     {
         try {
             $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
             $mail->isSMTP();
             $mail->Host = MAIL_HOST;
             $mail->SMTPAuth = true;
@@ -639,6 +641,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
     private function sendStockAlertMail($product, $remainingQty, $type)
     {
         $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
         try {
             $mail->isSMTP();
             $mail->Host       = MAIL_HOST;

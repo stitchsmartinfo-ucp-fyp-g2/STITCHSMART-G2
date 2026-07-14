@@ -31,6 +31,7 @@ class ContactController
             }
 
             $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
 
             try {
 

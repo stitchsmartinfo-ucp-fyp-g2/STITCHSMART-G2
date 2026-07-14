@@ -278,6 +278,7 @@ class OrderController {
 private function sendOrderEmail($toEmail, $name, $order_id, $total, $cart, $discountAmount = 0, $voucher_code = '')
 {
     $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
 
     try {
 
@@ -381,6 +382,7 @@ private function sendOrderEmail($toEmail, $name, $order_id, $total, $cart, $disc
 private function sendOutOfStockMail($product)
 {
     $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
 
     try {
 
@@ -476,6 +478,7 @@ private function sendOutOfStockMail($product)
 private function sendLowStockMail($product, $remainingQty)
 {
     $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
 
     try {
 

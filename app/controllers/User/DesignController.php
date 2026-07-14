@@ -185,6 +185,7 @@ class DesignController {
             }
 
             $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
 
             try {
                 $mail->isSMTP();
@@ -196,7 +197,7 @@ class DesignController {
                 $mail->Port       = MAIL_PORT;
 
                 $mail->setFrom(MAIL_USERNAME, 'Stitch Smart Design Inquiry');
-                $mail->addAddress('stitchSmartofficial@gmail.com');
+                $mail->addAddress(MAIL_USERNAME);
                 $mail->addReplyTo($email, $name);
 
                 $mail->isHTML(true);

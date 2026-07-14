@@ -121,6 +121,10 @@ class LoginController {
                     // Send OTP via PHPMailer
                     $mail = new PHPMailer(true);
                     try {
+                        if (empty(MAIL_USERNAME)) {
+                            throw new Exception('SMTP not configured');
+                        }
+                        $mail->Timeout = 3;
                         $mail->isSMTP();
                         $mail->Host = MAIL_HOST;
                         $mail->SMTPAuth = true;

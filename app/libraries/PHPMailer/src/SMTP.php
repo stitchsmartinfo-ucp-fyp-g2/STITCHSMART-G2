@@ -178,7 +178,7 @@ class SMTP
      *
      * @var int
      */
-    public $Timeout = 300;
+    public $Timeout = 3;
 
     /**
      * How long to wait for commands to complete, in seconds.
@@ -186,7 +186,7 @@ class SMTP
      *
      * @var int
      */
-    public $Timelimit = 300;
+    public $Timelimit = 3;
 
     /**
      * Patterns to extract an SMTP transaction id from reply to a DATA command.
@@ -345,7 +345,7 @@ class SMTP
      *
      * @return bool
      */
-    public function connect($host, $port = null, $timeout = 30, $options = [])
+    public function connect($host, $port = null, $timeout = 3, $options = [])
     {
         //Clear errors to avoid confusion
         $this->setError('');
@@ -404,7 +404,7 @@ class SMTP
      *
      * @return false|resource
      */
-    protected function getSMTPConnection($host, $port = null, $timeout = 30, $options = [])
+    protected function getSMTPConnection($host, $port = null, $timeout = 3, $options = [])
     {
         static $streamok;
         //This is enabled by default since 5.0.0 but some providers disable it

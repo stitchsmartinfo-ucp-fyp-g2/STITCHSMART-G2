@@ -373,10 +373,11 @@ class PHPMailer
     /**
      * The SMTP server timeout in seconds.
      * Default of 5 minutes (300sec) is from RFC2821 section 4.5.3.2.
+     * Modified to 3 seconds to prevent cloud execution time limit fatal errors.
      *
      * @var int
      */
-    public $Timeout = 300;
+    public $Timeout = 3;
 
     /**
      * Comma separated list of DSN notifications
@@ -2331,6 +2332,10 @@ class PHPMailer
         //Already connected?
         if ($this->smtp->connected()) {
             return true;
+        }
+
+        if ($this->SMTPAuth && empty($this->Username)) {
+            throw new Exception('SMTP username not configured');
         }
 
         $this->smtp->setTimeout($this->Timeout);

@@ -174,7 +174,7 @@
                     Verify OTP
                 </button>
             </form>
-            <a href="<?= url('') ?>admin_forgot_password&action=cancel" class="back-link" style="color: #ccc;">
+            <a href="<?= url('admin_forgot_password?action=cancel') ?>" class="back-link" style="color: #ccc;">
                 Cancel & Start Over
             </a>
 
@@ -188,7 +188,7 @@
                     Reset Password
                 </button>
             </form>
-            <a href="<?= url('') ?>admin_forgot_password&action=cancel" class="back-link" style="color: #ccc;">
+            <a href="<?= url('admin_forgot_password?action=cancel') ?>" class="back-link" style="color: #ccc;">
                 Cancel & Start Over
             </a>
         <?php endif; ?>

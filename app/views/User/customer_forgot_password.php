@@ -305,7 +305,7 @@
                    autocomplete="one-time-code">
             <button type="submit" id="verify-btn" class="btn-recover">Verify Code</button>
         </form>
-        <a href="<?= url('') ?>customer_forgot_password_process&action=cancel" class="back-link">
+        <a href="<?= url('customer_forgot_password_process?action=cancel') ?>" class="back-link">
             Cancel &amp; Start Over
         </a>
 
@@ -318,7 +318,7 @@
             var fillEl  = document.getElementById('ring-fill');
             var btn     = document.getElementById('verify-btn');
             var inp     = document.getElementById('otp-input');
-            var cancel  = "<?= url('') ?>customer_forgot_password_process&action=cancel";
+            var cancel  = "<?= url('customer_forgot_password_process?action=cancel') ?>";
 
             fillEl.style.strokeDasharray  = CIRC;
             fillEl.style.strokeDashoffset = 0;
@@ -352,7 +352,7 @@
             <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required minlength="4" style="margin-bottom:25px;">
             <button type="submit" class="btn-recover">Reset Password</button>
         </form>
-        <a href="<?= url('') ?>customer_forgot_password_process&action=cancel" class="back-link">
+        <a href="<?= url('customer_forgot_password_process?action=cancel') ?>" class="back-link">
             Cancel &amp; Start Over
         </a>
 

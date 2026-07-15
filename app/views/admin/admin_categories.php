@@ -45,11 +45,11 @@
                                 </div>
 
                                 <div class="d-flex gap-2 align-items-center" style="flex-shrink: 0;">
-                                    <a href="<?= url('') ?>edit_category&id=<?= $cat['c_id'] ?>"
+                                    <a href="<?= url('edit_category?id=' . $cat['c_id']) ?>"
                                        class="btn rounded-pill px-4 py-2 fw-bolder d-flex align-items-center gap-2 shadow-sm" style="background: linear-gradient(135deg, #ca9745, #e8c547) !important; color: #1a0f0a !important; border: none; font-size: 0.92rem; text-decoration: none;">
                                         <i class="bi bi-pencil-fill"></i> Edit Category
                                     </a>
-                                    <a href="<?= url('') ?>delete_category&id=<?= $cat['c_id'] ?>"
+                                    <a href="<?= url('delete_category?id=' . $cat['c_id']) ?>"
                                        class="btn rounded-pill px-3 py-2 fw-bold d-flex align-items-center gap-1" style="background: rgba(220, 53, 69, 0.12) !important; color: #dc3545 !important; border: 1px solid rgba(220, 53, 69, 0.3); font-size: 0.88rem; text-decoration: none;"
                                        onclick="return confirm('Delete this main category? All subcategories under it will also be removed.')">
                                         <i class="bi bi-trash-fill"></i> Delete
@@ -84,11 +84,11 @@
                                                         </span>
                                                     </td>
                                                     <td class="text-end pe-4">
-                                                        <a href="<?= url('') ?>edit_category&id=<?= $sub['c_id'] ?>"
+                                                        <a href="<?= url('edit_category?id=' . $sub['c_id']) ?>"
                                                            class="btn btn-sm rounded-pill px-3 py-1 me-1 fw-bold shadow-sm" style="background: linear-gradient(135deg, #ca9745, #e8c547); color: #1a0f0a; border: none; font-size: 0.82rem; text-decoration: none;">
                                                             ✏️ Edit Subcategory
                                                         </a>
-                                                        <a href="<?= url('') ?>delete_category&id=<?= $sub['c_id'] ?>"
+                                                        <a href="<?= url('delete_category?id=' . $sub['c_id']) ?>"
                                                            class="btn btn-sm rounded-pill px-3 py-1 fw-bold" style="background: rgba(220, 53, 69, 0.12); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.3); font-size: 0.82rem; text-decoration: none;"
                                                            onclick="return confirm('Delete this subcategory?')">
                                                             🗑️ Delete

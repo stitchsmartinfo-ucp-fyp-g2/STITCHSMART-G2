@@ -278,7 +278,7 @@
                 </div>
                 <h3 class="empty-cart-title mb-3">Your Cart is Empty</h3>
                 <p class="empty-cart-text mb-4">Looks like you haven't added anything to your cart yet.<br>Explore our premium collections and discover timeless, bespoke styles tailored just for you.</p>
-                <a href="<?= url('') ?>allproducts" class="btn btn-shop-now">
+                <a href="<?= url('allproducts') ?>" class="btn btn-shop-now">
                     Start Shopping <i class="bi bi-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -333,16 +333,16 @@
 
                     <td>
                         <div class="qty-control">
-                            <a href="<?= url('') ?>cart_update&id=<?= $id; ?>&action=minus" class="qty-btn"><i class="bi bi-dash"></i></a>
+                            <a href="<?= url('cart_update?id=' . $id . '&action=minus') ?>" class="qty-btn"><i class="bi bi-dash"></i></a>
                             <span class="qty-val"><?= $item['qty']; ?></span>
-                            <a href="<?= url('') ?>cart_update&id=<?= $id; ?>&action=add" class="qty-btn"><i class="bi bi-plus"></i></a>
+                            <a href="<?= url('cart_update?id=' . $id . '&action=add') ?>" class="qty-btn"><i class="bi bi-plus"></i></a>
                         </div>
                     </td>
 
                     <td>Rs. <?= number_format($itemTotal); ?></td>
 
                     <td>
-                        <a href="<?= url('') ?>cart_remove&id=<?= $id; ?>" 
+                        <a href="<?= url('cart_remove?id=' . $id) ?>" 
                            class="btn btn-danger btn-sm">
                             Remove
                         </a>
@@ -382,11 +382,11 @@
             }
         </style>
         <div class="cart-actions mt-4">
-            <a href="<?= url('') ?>allproducts" class="custom-cart-btn">
+            <a href="<?= url('allproducts') ?>" class="custom-cart-btn">
                 Continue Shopping
             </a>
 
-            <a href="<?= url('') ?>checkout" class="custom-cart-btn" style="background-color: #ca9745 !important;">
+            <a href="<?= url('checkout') ?>" class="custom-cart-btn" style="background-color: #ca9745 !important;">
                 Checkout
             </a>
         </div>

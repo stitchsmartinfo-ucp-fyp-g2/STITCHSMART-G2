@@ -20,10 +20,10 @@
         </h2>
         <p class="mb-0 mt-2" style="max-width: 680px; font-size: 1.05rem; line-height: 1.5; opacity: 0.85;">Review incoming orders, process shipments, track delivery progress, and manage fulfillment status across all customer purchases in real time.</p>
         <div class="mt-4 d-flex flex-wrap gap-3 align-items-center justify-content-center justify-content-md-start">
-            <a href="<?= url('') ?>admin_products" class="btn px-4 py-3 rounded-pill d-flex align-items-center gap-2 shadow-sm" style="background: linear-gradient(135deg, #ca9745, #e8c547); color: #1a0f0a; border: none; font-weight: 800; font-size: 0.96rem; transition: all 0.3s ease; text-decoration: none;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(202, 151, 69, 0.6)';" onmouseout="this.style.transform='translateY(0)';">
+            <a href="<?= url('admin_products') ?>" class="btn px-4 py-3 rounded-pill d-flex align-items-center gap-2 shadow-sm" style="background: linear-gradient(135deg, #ca9745, #e8c547); color: #1a0f0a; border: none; font-weight: 800; font-size: 0.96rem; transition: all 0.3s ease; text-decoration: none;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(202, 151, 69, 0.6)';" onmouseout="this.style.transform='translateY(0)';">
                 <i class="bi bi-box-seam-fill fs-5"></i> Products Catalog
             </a>
-            <a href="<?= url('') ?>dashbaord" class="btn px-4 py-3 rounded-pill d-flex align-items-center gap-2 shadow-sm" style="background: rgba(202, 151, 69, 0.18); color: #ca9745; border: 1px solid rgba(202, 151, 69, 0.5); font-weight: 700; font-size: 0.96rem; transition: all 0.3s ease; text-decoration: none;" onmouseover="this.style.background='rgba(202, 151, 69, 0.3)'; this.style.color='#1a0f0a';" onmouseout="this.style.background='rgba(202, 151, 69, 0.18)'; this.style.color='#ca9745';">
+            <a href="<?= url('dashbaord') ?>" class="btn px-4 py-3 rounded-pill d-flex align-items-center gap-2 shadow-sm" style="background: rgba(202, 151, 69, 0.18); color: #ca9745; border: 1px solid rgba(202, 151, 69, 0.5); font-weight: 700; font-size: 0.96rem; transition: all 0.3s ease; text-decoration: none;" onmouseover="this.style.background='rgba(202, 151, 69, 0.3)'; this.style.color='#1a0f0a';" onmouseout="this.style.background='rgba(202, 151, 69, 0.18)'; this.style.color='#ca9745';">
                 <i class="bi bi-speedometer2 fs-5"></i> Back to Dashboard
             </a>
         </div>
@@ -97,7 +97,7 @@
                                 <?php if(!$isDelivered && !$isCancelled): ?>
 
                                     <?php if($currentStatus === 'Pending'): ?>
-                                        <a href="<?= url('') ?>mark_processing&id=<?= $order['id'] ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(255,193,7,0.15); color: #ffc107; border: 1px solid rgba(255,193,7,0.4); white-space: nowrap;">
+                                        <a href="<?= url('mark_processing?id=' . $order['id']) ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(255,193,7,0.15); color: #ffc107; border: 1px solid rgba(255,193,7,0.4); white-space: nowrap;">
                                             <i class="bi bi-gear pe-1"></i>Mark Processing
                                         </a>
 
@@ -109,22 +109,22 @@
                                         <?php endif; ?>
 
                                     <?php elseif($currentStatus === 'Dispatched'): ?>
-                                        <a href="<?= url('') ?>mark_in_transit&id=<?= $order['id'] ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(13,202,240,0.15); color: #0dcaf0; border: 1px solid rgba(13,202,240,0.4); white-space: nowrap;">
+                                        <a href="<?= url('mark_in_transit?id=' . $order['id']) ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(13,202,240,0.15); color: #0dcaf0; border: 1px solid rgba(13,202,240,0.4); white-space: nowrap;">
                                             <i class="bi bi-truck pe-1"></i>Mark In Transit
                                         </a>
 
                                     <?php elseif($currentStatus === 'In Transit'): ?>
-                                        <a href="<?= url('') ?>mark_out_for_delivery&id=<?= $order['id'] ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(255,128,0,0.15); color: #ff8c00; border: 1px solid rgba(255,128,0,0.4); white-space: nowrap;">
+                                        <a href="<?= url('mark_out_for_delivery?id=' . $order['id']) ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(255,128,0,0.15); color: #ff8c00; border: 1px solid rgba(255,128,0,0.4); white-space: nowrap;">
                                             <i class="bi bi-scooter pe-1"></i>Out for Delivery
                                         </a>
 
                                     <?php elseif($currentStatus === 'Out for Delivery'): ?>
-                                        <a href="<?= url('') ?>mark_delivered&id=<?= $order['id'] ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(25,135,84,0.15); color: #198754; border: 1px solid rgba(25,135,84,0.4); white-space: nowrap;">
+                                        <a href="<?= url('mark_delivered?id=' . $order['id']) ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(25,135,84,0.15); color: #198754; border: 1px solid rgba(25,135,84,0.4); white-space: nowrap;">
                                             <i class="bi bi-check-circle pe-1"></i>Mark Delivered
                                         </a>
 
                                     <?php else: ?>
-                                        <a href="<?= url('') ?>mark_processing&id=<?= $order['id'] ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(255,193,7,0.15); color: #ffc107; border: 1px solid rgba(255,193,7,0.4); white-space: nowrap;">
+                                        <a href="<?= url('mark_processing?id=' . $order['id']) ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(255,193,7,0.15); color: #ffc107; border: 1px solid rgba(255,193,7,0.4); white-space: nowrap;">
                                             <i class="bi bi-arrow-clockwise pe-1"></i>Reset
                                         </a>
                                     <?php endif; ?>
@@ -139,7 +139,7 @@
                                             </button>
                                         <?php endif; ?>
                                         <div class="dispatch-form d-none w-100" id="dispatch-form-<?= $order['id'] ?>">
-                                            <form action="<?= url('') ?>save_tracking" method="post" class="d-flex flex-column gap-2">
+                                            <form action="<?= url('save_tracking') ?>" method="post" class="d-flex flex-column gap-2">
                                                 <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
                                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
                                                 <input type="text" name="tracking_id" class="form-control form-control-sm rounded-pill px-3" placeholder="Enter tracking ID" value="<?= htmlspecialchars($order['tracking_id'] ?? '') ?>" required style="border: 1px solid rgba(202,151,69,0.4); font-size: 0.85rem;">
@@ -150,7 +150,7 @@
                                         </div>
                                     <?php endif; ?>
 
-                                    <a href="<?= url('') ?>mark_cancelled&id=<?= $order['id'] ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(220,53,69,0.12); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); white-space: nowrap;" onclick="return confirm('Cancel this order? This cannot be undone.')">
+                                    <a href="<?= url('mark_cancelled?id=' . $order['id']) ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(220,53,69,0.12); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); white-space: nowrap;" onclick="return confirm('Cancel this order? This cannot be undone.')">
                                         <i class="bi bi-x-circle pe-1"></i>Cancel Order
                                     </a>
 
@@ -158,7 +158,7 @@
 
                                 <?php if($isDelivered || $isCancelled): ?>
                                     <span class="text-muted small"><i class="bi bi-check2-all pe-1"></i>Processed</span>
-                                    <a href="<?= url('') ?>delete_order&id=<?= $order['id'] ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(220,53,69,0.1); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); white-space: nowrap;" onclick="return confirm('Permanently delete this order from records?')">
+                                    <a href="<?= url('delete_order?id=' . $order['id']) ?>" class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(220,53,69,0.1); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); white-space: nowrap;" onclick="return confirm('Permanently delete this order from records?')">
                                         <i class="bi bi-trash3 pe-1"></i>Delete Record
                                     </a>
                                 <?php endif; ?>

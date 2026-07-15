@@ -269,7 +269,7 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
 <body class="co-page">
 
 <div class="container return-container">
-    <a href="<?= url('') ?>customer_order_detail&id=<?= $orderId ?>" class="btn-back">
+    <a href="<?= url('customer_order_detail?id=' . $orderId) ?>" class="btn-back">
         <i class="bi bi-arrow-left"></i> Back to Order Details
     </a>
 
@@ -292,7 +292,7 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
             </div>
         </div>
 
-        <form action="<?= url('') ?>submit_return_request" method="POST">
+        <form action="<?= url('submit_return_request') ?>" method="POST">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
             <input type="hidden" name="order_id" value="<?= $orderId; ?>">
             <input type="hidden" name="item_id" value="<?= $itemId; ?>">

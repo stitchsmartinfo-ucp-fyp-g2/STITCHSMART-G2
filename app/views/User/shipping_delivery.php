@@ -237,7 +237,7 @@
         <div class="container">
             <h2>Track Your Order or Need Help?</h2>
             <p>If you have any questions regarding an existing shipment, please contact our dispatch team through the support portal.</p>
-            <a href="<?= url('') ?>contact" class="btn-gold">Contact Support</a>
+            <a href="<?= url('contact') ?>" class="btn-gold">Contact Support</a>
         </div>
     </section>
 </div>

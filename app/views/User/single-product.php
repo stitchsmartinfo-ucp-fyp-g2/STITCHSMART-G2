@@ -195,7 +195,9 @@ $seoUrl = url('product_show?id=' . $product['id']);
       <!-- Gallery -->
       <div class="col-lg-6">
         <?php
-            $productImages = array_filter(array_map('trim', explode(',', $product['image_url'] ?? '')));
+            $productImages = array_filter(array_map('trim', explode(',', $product['image_url'] ?? '')), function($imgPath) {
+                return !empty($imgPath) && file_exists(BASE_PATH . '/public/' . $imgPath);
+            });
             $productImages = array_values($productImages);
             $mainImage = $productImages[0] ?? '';
         ?>
@@ -1058,7 +1060,7 @@ document.getElementById('qty').addEventListener('input', function(){
 });
 
 (function() {
-    const galleryImages = <?= json_encode(array_values(array_filter(array_map('trim', explode(',', $product['image_url'] ?? ''))))) ?>;
+    const galleryImages = <?= json_encode($productImages) ?>;
     const mainImg = document.getElementById('mainImg');
     const prevBtn = document.getElementById('prevImgBtn');
     const nextBtn = document.getElementById('nextImgBtn');

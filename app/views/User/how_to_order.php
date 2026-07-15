@@ -211,7 +211,7 @@
         <div class="container">
             <h2>Ready to Elevate Your Wardrobe?</h2>
             <p>Start browsing our latest premium collections and experience the true art of bespoke tailoring today.</p>
-            <a href="<?= url('') ?>allproducts" class="btn-gold">Shop Now</a>
+            <a href="<?= url('allproducts') ?>" class="btn-gold">Shop Now</a>
         </div>
     </section>
 </div>

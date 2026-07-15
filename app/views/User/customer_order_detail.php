@@ -477,7 +477,7 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
                     </p>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
-                    <a href="<?= url('') ?>customer_orders" class="btn btn-back-orders">
+                    <a href="<?= url('customer_orders') ?>" class="btn btn-back-orders">
                         <i class="bi bi-arrow-left"></i> Back to Orders
                     </a>
                 </div>
@@ -626,7 +626,7 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
                                                     <?php if (isset($itemReturns[$item['id']])): ?>
                                                         <span class="badge bg-secondary px-3 py-2 text-uppercase" style="letter-spacing: 1px; font-size: 0.7rem;"><i class="bi bi-info-circle"></i> <?= htmlspecialchars(ucfirst($itemReturns[$item['id']])); ?></span>
                                                     <?php else: ?>
-                                                        <a href="<?= url('') ?>customer_return_request&order_id=<?= $order['id']; ?>&item_id=<?= $item['id']; ?>" 
+                                                    <a href="<?= url('customer_return_request?order_id=' . $order['id'] . '&item_id=' . $item['id']) ?>" 
                                                            class="btn btn-sm btn-outline-warning rounded-pill px-3 py-1" 
                                                            style="font-size: 0.8rem; font-weight: 600;">
                                                             <i class="bi bi-box-arrow-down-left"></i> Return

@@ -110,7 +110,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="<?= url('') ?>feature_product&id=<?= $prod['id'] ?>" 
+                                    <a href="<?= url('feature_product?id=' . $prod['id']) ?>" 
                                        class="btn btn-sm px-4 py-2 rounded-pill fw-bold" style="background: rgba(220, 53, 69, 0.15); border: 1px solid rgba(220, 53, 69, 0.5); color: #ff6b6b; transition: all 0.3s ease;" onmouseover="this.style.background='#dc3545'; this.style.color='#fff'; this.style.transform='scale(1.05)';" onmouseout="this.style.background='rgba(220, 53, 69, 0.15)'; this.style.color='#ff6b6b'; this.style.transform='scale(1)';" title="Remove from Featured Showcase">
                                        <i class="bi bi-x-circle-fill pe-1"></i> Remove Feature
                                     </a>
@@ -168,7 +168,7 @@
                               <td class="py-3 fw-bold font-monospace text-light"><?= htmlspecialchars($avail['article_number']) ?></td>
                               <td class="py-3 fw-bold text-white"><?= htmlspecialchars($avail['name']) ?></td>
                               <td class="py-3 text-end pe-4">
-                                  <a href="<?= url('') ?>feature_product&id=<?= $avail['id'] ?>" class="btn btn-sm rounded-pill px-4 py-2 fw-bold" style="background: linear-gradient(135deg, #ca9745, #e8c547); color: #1a0f0a; box-shadow: 0 2px 8px rgba(202, 151, 69, 0.4); text-decoration: none;">⭐ Add to Showcase</a>
+                                  <a href="<?= url('feature_product?id=' . $avail['id']) ?>" class="btn btn-sm rounded-pill px-4 py-2 fw-bold" style="background: linear-gradient(135deg, #ca9745, #e8c547); color: #1a0f0a; box-shadow: 0 2px 8px rgba(202, 151, 69, 0.4); text-decoration: none;">⭐ Add to Showcase</a>
                               </td>
                           </tr>
                       <?php endforeach; ?>

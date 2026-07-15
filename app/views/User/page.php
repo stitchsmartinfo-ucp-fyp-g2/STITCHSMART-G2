@@ -137,13 +137,69 @@ $blackTextPage = in_array($page['title'] ?? '', $blackTextPages, true) && ($glob
     $customPages = ['about-us', 'product-advice', 'payment-and-financing', 'our-story', 'ourstory', 'shipping-and-delivery', 'terms-and-condition', 'how-to-order'];
  ?>
  <?php if (isset($slug) && in_array($slug, $customPages)): ?>
-    <?= $page['content'] ?? '' ?>
+    <?php
+        $content = $page['content'] ?? '';
+        
+        // Clean up un-evaluated PHP tags in the database content
+        $content = preg_replace_callback('/(<\?=|<\?php echo)\s*(BASE_URL|url\(\'\'\)|url\(\"\"\))\s*\??\s*?>\/index\.php\?page=([a-zA-Z0-9_-]+)/i', function($matches) {
+            return url($matches[3]);
+        }, $content);
+
+        $content = preg_replace_callback('/(<\?=|<\?php echo)\s*(BASE_URL|url\(\'\'\)|url\(\"\"\))\s*\??\s*?>\/([a-zA-Z0-9_-]+)/i', function($matches) {
+            return url($matches[3]);
+        }, $content);
+
+        $content = preg_replace_callback('/(<\?=|<\?php echo)\s*(BASE_URL|url\(\'\'\)|url\(\"\"\))\s*\??\s*?>/i', function($matches) {
+            return url('');
+        }, $content);
+
+        // Fallbacks for specific literal queries
+        $content = str_replace(
+            ['<?= BASE_URL ?>/index.php?page=contact', '<?php echo BASE_URL; ?>/index.php?page=contact', '<?= url(\'\') ?>contact', '<?= url("") ?>contact'],
+            [url('contact'), url('contact'), url('contact'), url('contact')],
+            $content
+        );
+        $content = str_replace(
+            ['<?= BASE_URL ?>/index.php?page=allproducts', '<?php echo BASE_URL; ?>/index.php?page=allproducts', '<?= url(\'\') ?>allproducts', '<?= url("") ?>allproducts'],
+            [url('allproducts'), url('allproducts'), url('allproducts'), url('allproducts')],
+            $content
+        );
+
+        echo $content;
+    ?>
  <?php else: ?>
- <div class="container-fluid headcon">
+  <div class="container-fluid headcon">
 <h1 class="text-center mb-4"><?= htmlspecialchars($page['title'] ?? 'Page'); ?></h1>
 </div>
     <div class="page2<?= $blackTextPage ? ' page-black-text' : '' ?>">
-        <?= $page['content'] ?? '' ?>
+        <?php
+            $content = $page['content'] ?? '';
+            // Clean up un-evaluated PHP tags for non-custom pages as well
+            $content = preg_replace_callback('/(<\?=|<\?php echo)\s*(BASE_URL|url\(\'\'\)|url\(\"\"\))\s*\??\s*?>\/index\.php\?page=([a-zA-Z0-9_-]+)/i', function($matches) {
+                return url($matches[3]);
+            }, $content);
+
+            $content = preg_replace_callback('/(<\?=|<\?php echo)\s*(BASE_URL|url\(\'\'\)|url\(\"\"\))\s*\??\s*?>\/([a-zA-Z0-9_-]+)/i', function($matches) {
+                return url($matches[3]);
+            }, $content);
+
+            $content = preg_replace_callback('/(<\?=|<\?php echo)\s*(BASE_URL|url\(\'\'\)|url\(\"\"\))\s*\??\s*?>/i', function($matches) {
+                return url('');
+            }, $content);
+
+            $content = str_replace(
+                ['<?= BASE_URL ?>/index.php?page=contact', '<?php echo BASE_URL; ?>/index.php?page=contact', '<?= url(\'\') ?>contact', '<?= url("") ?>contact'],
+                [url('contact'), url('contact'), url('contact'), url('contact')],
+                $content
+            );
+            $content = str_replace(
+                ['<?= BASE_URL ?>/index.php?page=allproducts', '<?php echo BASE_URL; ?>/index.php?page=allproducts', '<?= url(\'\') ?>allproducts', '<?= url("") ?>allproducts'],
+                [url('allproducts'), url('allproducts'), url('allproducts'), url('allproducts')],
+                $content
+            );
+
+            echo $content;
+        ?>
     </div>
  <?php endif; ?>
 </div>

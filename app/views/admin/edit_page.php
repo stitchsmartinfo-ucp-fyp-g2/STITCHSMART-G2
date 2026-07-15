@@ -27,7 +27,7 @@
                 <i class="bi bi-arrow-left pe-1"></i> Back to Pages Directory
             </a>
         </div>
-    <form enctype="multipart/form-data" action="<?php echo url('') ?>update_page&id=<?= (int)$page['id'] ?>" method="post">
+    <form enctype="multipart/form-data" action="<?php echo url('update_page?id=' . (int)$page['id']) ?>" method="post">
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($page['id']); ?>">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
 

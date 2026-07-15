@@ -14,7 +14,6 @@ class Database
     private string $dbname;
     private int    $port;
 
-    private static ?mysqli $sharedConn = null;
     public mysqli $conn;
 
     public function __construct()
@@ -32,26 +31,8 @@ class Database
      */
     public function connect(): mysqli
     {
-        if (self::$sharedConn !== null) {
-            try {
-                if (@self::$sharedConn->ping()) {
-                    $this->conn = self::$sharedConn;
-                    return self::$sharedConn;
-                }
-            } catch (Exception $e) {
-                // Connection dropped, reconnect
-            }
-        }
-
-        if (!class_exists('mysqli')) {
-            die('Database connection failed: PHP extension "mysqli" is not installed or enabled on this server.');
-        }
-
         try {
-            if (function_exists('mysqli_report')) {
-                mysqli_report(MYSQLI_REPORT_OFF);
-            }
-            self::$sharedConn = @new mysqli(
+            $this->conn = @new mysqli(
                 $this->host,
                 $this->username,
                 $this->password,
@@ -59,15 +40,20 @@ class Database
                 $this->port
             );
 
-            if (self::$sharedConn->connect_error) {
-                die('Database connection failed: ' . self::$sharedConn->connect_error);
+            if ($this->conn->connect_error) {
+                $msg = defined('APP_DEBUG') && APP_DEBUG
+                    ? 'Database connection failed: ' . $this->conn->connect_error
+                    : 'A database error occurred. Please try again later.';
+                die($msg);
             }
 
-            self::$sharedConn->set_charset('utf8mb4');
-            $this->conn = self::$sharedConn;
-            return self::$sharedConn;
-        } catch (Exception $e) {
-            die('Database connection failed: ' . $e->getMessage());
+            $this->conn->set_charset('utf8mb4');
+            return $this->conn;
+        } catch (Throwable $e) {
+            $msg = defined('APP_DEBUG') && APP_DEBUG
+                ? 'Database connection exception: ' . $e->getMessage() . ' | Host: ' . $this->host . ' | Port: ' . $this->port . ' | User: ' . $this->username . ' | DB: ' . $this->dbname
+                : 'A database error occurred. Please try again later.';
+            die($msg);
         }
     }
 }

@@ -96,11 +96,11 @@
                             <td class="fw-semibold fs-6"><?php echo htmlspecialchars($row['text']); ?></td>
                             <td class="text-end px-4">
                                 <div class="btn-group">
-                                    <a href="<?php echo url('') ?>edit_banner&id=<?php echo $row['id']; ?>" 
+                                    <a href="<?php echo url('edit_banner?id=' . $row['id']) ?>" 
                                        class="btn btn-sm px-3 rounded-pill me-2 d-inline-flex align-items-center gap-1">
                                        <i class="bi bi-pencil-square"></i> Edit
                                     </a>
-                                    <a href="<?php echo url('') ?>delete_banner&id=<?php echo $row['id']; ?>" 
+                                    <a href="<?php echo url('delete_banner?id=' . $row['id']) ?>" 
                                        class="btn btn-sm btn-danger px-3 rounded-pill d-inline-flex align-items-center gap-1" 
                                        onclick="return confirm('Remove this banner from storefront carousel?')">
                                        <i class="bi bi-trash"></i> Delete
@@ -164,7 +164,7 @@ async function generateMetaAI(btn) {
         btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Generating...`;
 
         const apiKey = "<?= GOOGLE_API_KEY ?>";
-        let url = `https://generativelanguage.googleapis.com/v1beta/models/<?= GEMINI_MODEL ?>:generateContent?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1/models/<?= GEMINI_MODEL ?>:generateContent?key=${apiKey}`;
 
         const body = {
             contents: [{
@@ -176,39 +176,14 @@ async function generateMetaAI(btn) {
             }]
         };
 
-        let res = await fetch(url, {
+        const res = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         });
 
-        let data = await res.json();
-        if (data.error && (data.error.code === 404 || data.error.message.toLowerCase().includes("not found") || data.error.message.toLowerCase().includes("supported"))) {
-            url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`;
-            res = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
-            });
-            data = await res.json();
-        }
-
-        const successMsg = `
-            <div class="alert alert-success alert-dismissible fade show mt-3 border-0 rounded-3 p-3 shadow" role="alert" style="background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.3) !important; color: #28a745;">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong>Your information is fetched successfully!</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        `;
-
-        if (data.error) {
-            document.getElementById("meta-title").value = "StitchSmart - Bespoke Executive Luxury Tailoring & Fashion";
-            document.getElementById("meta-description").value = "Discover the finest collection of luxury tailoring, handcrafted apparel, and bespoke executive wear at StitchSmart.";
-            document.getElementById("meta-keywords").value = "luxury fashion, bespoke tailoring, online garments, executive wear, custom suits";
-            const container = document.getElementById("ai-error-container");
-            if (container) container.innerHTML = successMsg;
-            return;
-        }
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message);
 
         let text = data.candidates[0].content.parts[0].text;
         
@@ -220,22 +195,24 @@ async function generateMetaAI(btn) {
         document.getElementById("meta-description").value = json.description || "";
         document.getElementById("meta-keywords").value = json.keywords || "";
 
-        const container = document.getElementById("ai-error-container");
-        if (container) container.innerHTML = successMsg;
-
     } catch (err) {
         console.error("AI Error:", err);
-        document.getElementById("meta-title").value = "StitchSmart - Bespoke Executive Luxury Tailoring & Fashion";
-        document.getElementById("meta-description").value = "Discover the finest collection of luxury tailoring, handcrafted apparel, and bespoke executive wear at StitchSmart.";
-        document.getElementById("meta-keywords").value = "luxury fashion, bespoke tailoring, online garments, executive wear, custom suits";
-        const container = document.getElementById("ai-error-container");
-        if (container) container.innerHTML = `
-            <div class="alert alert-success alert-dismissible fade show mt-3 border-0 rounded-3 p-3 shadow" role="alert" style="background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.3) !important; color: #28a745;">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong>Your information is fetched successfully!</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        `;
+        const errorContainer = document.getElementById("ai-error-container");
+        if (errorContainer) {
+            errorContainer.innerHTML = `
+                <div class="alert alert-danger alert-dismissible fade show mt-3 border-0 rounded-3 p-3 shadow" role="alert">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <strong>AI Generation failed:</strong> ${err.message}
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-danger px-3 py-1 rounded-pill" data-bs-dismiss="alert" aria-label="Close">OK</button>
+                    </div>
+                </div>
+            `;
+        } else {
+            alert("AI Generation failed: " + err.message);
+        }
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;

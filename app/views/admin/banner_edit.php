@@ -8,7 +8,7 @@
                 <i class="bi bi-arrow-left pe-1"></i> Back to Store Homepage
             </a>
         </div>
-    <form action="<?php echo url('') ?>edit_banner&id=<?php echo (int)$banner['id']; ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo url('edit_banner?id=' . (int)$banner['id']); ?>" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
         <?php if (!empty($banner['image_url'])): ?>
             <div class="mb-4 text-center p-3 rounded-3 border" style="background: rgba(0,0,0,0.05);">

@@ -222,7 +222,7 @@
         <div class="container">
             <h2>Have Payment Questions?</h2>
             <p>If you're having trouble with checkout or want to discuss financing for a bulk custom order, our billing team is here to assist you.</p>
-            <a href="<?= url('') ?>contact" class="btn-gold">Contact Support</a>
+            <a href="<?= url('contact') ?>" class="btn-gold">Contact Support</a>
         </div>
     </section>
 </div>

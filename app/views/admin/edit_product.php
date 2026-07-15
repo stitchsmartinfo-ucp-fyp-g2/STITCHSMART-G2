@@ -47,7 +47,7 @@
                                 <small class="text-muted d-block mb-1">Current Images</small>
                                 <div class="d-flex flex-wrap gap-2">
                                     <?php foreach(array_filter(array_map('trim', explode(',', $product['image_url']))) as $imgPath): ?>
-                                        <?php if(!empty($imgPath)): ?>
+                                        <?php if(!empty($imgPath) && file_exists(BASE_PATH . '/public/' . $imgPath)): ?>
                                             <img src="<?= BASE_URL ?>/<?= htmlspecialchars($imgPath) ?>" 
                                                  class="img-thumbnail rounded" 
                                                  style="max-width:120px;">

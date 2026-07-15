@@ -98,11 +98,11 @@
                                 </td>
                                 <td class="py-3">
                                     <div class="d-flex gap-2 justify-content-center">
-                                        <a href="<?= url('') ?>edit_product&id=<?= $prod['id'] ?>" 
+                                        <a href="<?= url('edit_product?id=' . $prod['id']) ?>" 
                                            class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(202, 151, 69, 0.2); color: #9c6d23; border: 1px solid rgba(202, 151, 69, 0.6); transition: all 0.2s ease;" onmouseover="this.style.background='rgba(202, 151, 69, 0.35)'; this.style.color='#1a0f0a';" onmouseout="this.style.background='rgba(202, 151, 69, 0.2)'; this.style.color='#9c6d23';">
                                            <i class="bi bi-pencil-fill pe-1"></i>Edit
                                         </a>
-                                        <a href="<?= url('') ?>delete_product&id=<?= $prod['id'] ?>" 
+                                        <a href="<?= url('delete_product?id=' . $prod['id']) ?>" 
                                            class="btn btn-sm rounded-pill px-3 fw-bold" style="background: rgba(220,53,69,0.12); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); transition: all 0.2s ease;" onmouseover="this.style.background='rgba(220,53,69,0.25)';" onmouseout="this.style.background='rgba(220,53,69,0.12)';"
                                            onclick="return confirm('Are you sure you want to delete this product? This action cannot be undone.')">
                                            <i class="bi bi-trash3-fill pe-1"></i>Delete

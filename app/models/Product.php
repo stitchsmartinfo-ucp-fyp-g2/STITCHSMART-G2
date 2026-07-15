@@ -110,6 +110,50 @@ public function fixAllZeroSizesInDB() {
     }
 }
 
+// Auto fix images by filtering out paths that do not exist on disk
+public function autoFixProductImages(&$product) {
+    if (!$product || empty($product['image_url'])) return;
+    
+    $images = explode(',', $product['image_url']);
+    $validImages = [];
+    $changed = false;
+    $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(dirname(__DIR__));
+    
+    foreach ($images as $img) {
+        $img = trim($img);
+        if (empty($img)) {
+            $changed = true;
+            continue;
+        }
+        $fullPath = $basePath . '/public/' . $img;
+        if (file_exists($fullPath)) {
+            $validImages[] = $img;
+        } else {
+            $changed = true;
+        }
+    }
+    
+    if ($changed) {
+        if (empty($validImages)) {
+            $cleanImages = array_filter(array_map('trim', $images));
+            $new_image_url = !empty($cleanImages) ? reset($cleanImages) : '';
+        } else {
+            $new_image_url = implode(',', $validImages);
+        }
+        
+        $product['image_url'] = $new_image_url;
+        
+        if (isset($product['id'])) {
+            $id = (int)$product['id'];
+            $up_stmt = $this->conn->prepare("UPDATE product SET image_url=? WHERE id=?");
+            if ($up_stmt) {
+                $up_stmt->bind_param("si", $new_image_url, $id);
+                $up_stmt->execute();
+            }
+        }
+    }
+}
+
 // get single product
 public function getProductById($id){
     $stmt = $this->conn->prepare("SELECT * FROM product WHERE id=?");
@@ -119,6 +163,7 @@ public function getProductById($id){
     $product = $result->fetch_assoc();
     $this->autoFixProductSizes($product);
     $this->autoFixProductSEO($product);
+    $this->autoFixProductImages($product);
     return $product;
 }
 //get product by categories

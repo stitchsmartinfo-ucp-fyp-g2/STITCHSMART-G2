@@ -7,13 +7,21 @@ class SchemaBootstrap
     public function __construct(mysqli $conn)
     {
         $this->conn = $conn;
-        $this->ensureInitialDatabaseImport();
-        $this->ensureWishlistTableExists();
-        $this->ensureEmailLogsTableExists();
-        $this->ensureCartTableExists();
-        $this->ensureJazzCashTableExists();
-        $this->ensureCmsPagesExist();
+        try {
+            $this->ensureInitialDatabaseImport();
+            $this->ensureWishlistTableExists();
+            $this->ensureEmailLogsTableExists();
+            $this->ensureCartTableExists();
+            $this->ensureJazzCashTableExists();
+            $this->ensureCmsPagesExist();
+        } catch (Throwable $e) {
+            $msg = defined('APP_DEBUG') && APP_DEBUG
+                ? 'Schema Bootstrap Exception: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine()
+                : 'A database initialization error occurred. Please try again later.';
+            die($msg);
+        }
     }
+
 
     private function ensureInitialDatabaseImport(): void
     {

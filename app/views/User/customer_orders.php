@@ -581,7 +581,7 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
 <div class="co-page-header">
     <div class="container">
         <div class="co-breadcrumb">
-            <a href="<?= url('') ?>home"><i class="bi bi-house-fill"></i> Home</a>
+            <a href="<?= url('home') ?>"><i class="bi bi-house-fill"></i> Home</a>
             <i class="bi bi-chevron-right"></i>
             <span>My Orders</span>
         </div>
@@ -590,7 +590,7 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
                 <h1 class="co-header-title">Order History</h1>
                 <p class="co-header-sub">Track and manage all your purchases</p>
             </div>
-            <a href="<?= url('') ?>allproducts" class="co-btn co-btn-primary">
+            <a href="<?= url('allproducts') ?>" class="co-btn co-btn-primary">
                 <i class="bi bi-bag-heart-fill"></i> Continue Shopping
             </a>
         </div>
@@ -612,7 +612,7 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
         <i class="bi bi-bag-x co-empty-icon"></i>
         <h3>No orders yet</h3>
         <p>Your purchase history will appear here once you place your first order.</p>
-        <a href="<?= url('') ?>home" class="co-btn co-btn-primary">
+        <a href="<?= url('home') ?>" class="co-btn co-btn-primary">
             <i class="bi bi-bag-fill"></i> Start Shopping
         </a>
     </div>
@@ -732,12 +732,12 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
 
                 <div class="co-card-footer">
                     <?php if (strtolower(trim($order['status'] ?? '')) === 'delivered'): ?>
-                        <a href="<?= url('') ?>customer_order_review&id=<?= htmlspecialchars($order['id']) ?>"
+                        <a href="<?= url('customer_order_review?id=' . $order['id']) ?>"
                            class="co-btn co-btn-primary">
                             <i class="bi bi-star-fill"></i> Rate &amp; Review
                         </a>
                     <?php endif; ?>
-                    <a href="<?= url('') ?>customer_order_detail&id=<?= htmlspecialchars($order['id']) ?>"
+                    <a href="<?= url('customer_order_detail?id=' . $order['id']) ?>"
                        class="co-btn co-btn-ghost">
                         <i class="bi bi-eye"></i> View Details
                     </a>

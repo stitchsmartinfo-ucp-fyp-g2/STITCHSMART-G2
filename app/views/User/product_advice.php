@@ -263,7 +263,7 @@
         <div class="container">
             <h2>Need Personalized Assistance?</h2>
             <p>Our style experts and tailors are always available to help you make the right choice.</p>
-            <a href="<?= url('') ?>contact" class="btn-gold">Contact Support</a>
+            <a href="<?= url('contact') ?>" class="btn-gold">Contact Support</a>
         </div>
     </section>
 </div>

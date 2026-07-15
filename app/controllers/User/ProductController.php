@@ -5,7 +5,13 @@ require_once BASE_PATH.'/app/models/settings.php';
 require_once BASE_PATH.'/app/models/Product.php';
 require_once BASE_PATH.'/app/models/ad_category.php';
 require_once BASE_PATH.'/app/models/SchemaBootstrap.php';
-require_once BASE_PATH . '/app/services/MailService.php';
+
+require_once BASE_PATH . '/app/libraries/PHPMailer/src/Exception.php';
+require_once BASE_PATH . '/app/libraries/PHPMailer/src/PHPMailer.php';
+require_once BASE_PATH . '/app/libraries/PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class ProductController {
 
@@ -574,8 +580,24 @@ private function sendRestockRequestMail($product)
         return;
     }
 
+    $mail = new PHPMailer(true);
     try {
-        $mailBody = "
+        $mail->Timeout = 15;
+        $mail->isSMTP();
+        $mail->Host     = MAIL_HOST;
+        $mail->SMTPAuth = true;
+        $mail->Username = MAIL_USERNAME;
+        $mail->Password = MAIL_PASSWORD;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port     = MAIL_PORT;
+
+        $mail->setFrom(MAIL_USERNAME, 'Stock Restock Alert');
+        $mail->addAddress(MAIL_USERNAME, 'Stitch Smart Admin');
+
+        $mail->isHTML(true);
+        $mail->Subject = "Restock Needed: " . $product['name'] . " (Out of Stock)";
+
+        $mail->Body = "
         <div style='font-family:Arial;padding:20px;line-height:1.6;'>
             <h2 style='color:#c52c1e;'>Inventory Alert: Out of Stock ⚠️</h2>
             <p>Hello Admin,</p>
@@ -608,10 +630,10 @@ private function sendRestockRequestMail($product)
         </div>
         ";
 
-        MailService::send(MAIL_USERNAME, 'Stitch Smart Admin', "Restock Needed: " . $product['name'] . " (Out of Stock)", $mailBody);
+        $mail->send();
         $_SESSION['notified_restock'][$product['id']] = true;
-    } catch (\Throwable $e) {
-        error_log('Restock Request Mail Error: ' . $e->getMessage());
+    } catch (Exception $e) {
+        error_log('Restock Request Mail Error: ' . $mail->ErrorInfo);
     }
 }
 public function getProductById($id){

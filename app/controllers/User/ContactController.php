@@ -1,6 +1,11 @@
 <?php
 
-require_once BASE_PATH . '/app/services/MailService.php';
+require BASE_PATH . '/app/libraries/PHPMailer/src/Exception.php';
+require BASE_PATH . '/app/libraries/PHPMailer/src/PHPMailer.php';
+require BASE_PATH . '/app/libraries/PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class ContactController
 {
@@ -25,14 +30,40 @@ class ContactController
                 exit;
             }
 
+            $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
+
             try {
+
+                // SMTP SETTINGS
+                $mail->isSMTP();
+                $mail->Host       = MAIL_HOST;
+                $mail->SMTPAuth   = true;
+                $mail->Username   = MAIL_USERNAME;
+                $mail->Password   = MAIL_PASSWORD;
+                $mail->SMTPSecure = MAIL_ENCRYPTION;
+                $mail->Port       = MAIL_PORT;
+
+                // FROM
+                $mail->setFrom(MAIL_USERNAME, 'Website Contact');
+
+                // TO
+                $mail->addAddress(MAIL_USERNAME);
+
+                // REPLY TO USER
+                $mail->addReplyTo($email, $name);
+
+                // EMAIL CONTENT
+                $mail->isHTML(true);
+                $mail->Subject = 'New Contact Form Message';
+
                 $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                 $safeEmail = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
                 $safePhone = htmlspecialchars($phone, ENT_QUOTES, 'UTF-8');
                 $safePhoneDisplay = !empty($safePhone) ? $safePhone : 'Not Provided';
                 $safeMessage = nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8'));
 
-                $mailBody = "
+                $mail->Body = "
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f7f4f0; padding: 30px; border-radius: 10px; border: 1px solid #e8e0d5;'>
                     <div style='text-align: center; margin-bottom: 25px;'>
                         <h2 style='color: #1a0f0a; margin: 0; font-family: Georgia, serif;'>StitchSmart</h2>
@@ -67,16 +98,16 @@ class ContactController
                 </div>
                 ";
 
-                MailService::send(MAIL_USERNAME, 'Website Contact', 'New Contact Form Message', $mailBody, '', $email, $name);
+                $mail->send();
 
                 $_SESSION['success'] = "Message sent successfully!";
 
                 header("Location: " . url("") . "contact");
                 exit;
 
-            } catch (\Throwable $e) {
+            } catch (Exception $e) {
 
-                $_SESSION['error'] = "Mailer Error: " . $e->getMessage();
+                $_SESSION['error'] = "Mailer Error: " . $mail->ErrorInfo;
 
                 header("Location: " . url("") . "contact");
                 exit;

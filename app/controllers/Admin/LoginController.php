@@ -1,7 +1,12 @@
 <?php
 require_once __DIR__ . '/../../models/Admin.php';
 require_once __DIR__ . '/../../../config/database.php';
-require_once __DIR__ . '/../../services/MailService.php';
+require_once __DIR__ . '/../../libraries/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/../../libraries/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/../../libraries/PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class LoginController {
     private $pdo;
@@ -113,9 +118,27 @@ class LoginController {
                     $_SESSION['reset_otp_admin'] = $otp;
                     $_SESSION['reset_otp_expiry_admin'] = time() + 600; // 10 minutes expiry
 
-                    // Send OTP via Brevo API
+                    // Send OTP via PHPMailer
+                    $mail = new PHPMailer(true);
                     try {
-                        $mailBody = "
+                        if (empty(MAIL_USERNAME)) {
+                            throw new \Exception('SMTP not configured');
+                        }
+                        $mail->Timeout = 15;
+                        $mail->isSMTP();
+                        $mail->Host = MAIL_HOST;
+                        $mail->SMTPAuth = true;
+                        $mail->Username = MAIL_USERNAME;
+                        $mail->Password = MAIL_PASSWORD;
+                        $mail->SMTPSecure = MAIL_ENCRYPTION;
+                        $mail->Port = MAIL_PORT;
+
+                        $mail->setFrom(MAIL_USERNAME, 'Stitch Smart Admin');
+                        $mail->addAddress($email);
+
+                        $mail->isHTML(true);
+                        $mail->Subject = "Stitch Smart Admin Portal - One-Time Password (OTP)";
+                        $mail->Body = "
                         <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #CD9A48; border-radius: 16px; background-color: #1a0f0a; color: #ffffff;'>
                             <h2 style='color: #CD9A48; text-align: center; font-size: 24px; margin-bottom: 20px;'>Admin Portal Recovery</h2>
                             <p style='font-size: 16px; line-height: 1.6; color: #cccccc;'>Hello Administrator,</p>
@@ -128,12 +151,14 @@ class LoginController {
                             <p style='font-size: 14px; color: #777777; text-align: center; margin-bottom: 0;'>Thank you,<br><strong>Stitch Smart Security</strong></p>
                         </div>
                         ";
-                        $altBody = "Hello Administrator, your OTP for portal password reset is {$otp}. It is valid for 10 minutes.";
+                        $mail->AltBody = "Hello Administrator, your OTP for portal password reset is {$otp}. It is valid for 10 minutes.";
 
-                        MailService::send($email, 'Administrator', "Stitch Smart Admin Portal - One-Time Password (OTP)", $mailBody, $altBody);
+                        $mail->send();
                         $_SESSION['forgot_success'] = "One-Time Password (OTP) has been sent to your administrator Gmail.";
                     } catch (\Throwable $e) {
-                        error_log('[StitchSmart Mail] Admin forgot password mail FAILED: ' . $e->getMessage());
+                        // Log exact error for debugging
+                        $smtpError = $mail->ErrorInfo ?: $e->getMessage();
+                        error_log('[StitchSmart SMTP] Admin forgot password mail FAILED: ' . $smtpError . ' | MAIL_USERNAME=' . MAIL_USERNAME . ' | MAIL_HOST=' . MAIL_HOST . ' | MAIL_PORT=' . MAIL_PORT);
                         // Offline simulator helper
                         $_SESSION['forgot_success'] = "One-Time Password (OTP) has been generated: <strong>{$otp}</strong> (Email system simulation fallback enabled)";
                     }

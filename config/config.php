@@ -124,18 +124,12 @@ define('CHATBOT_API_TIMEOUT', (int) env('CHATBOT_API_TIMEOUT', 30));
 define('CHATBOT_API_TOKEN',   env('CHATBOT_API_TOKEN',   ''));
 
 // ── Mail ─────────────────────────────────────────────────────────────────────
-// SMTP (local/dev fallback only — Railway blocks outbound SMTP ports in production)
 define('MAIL_HOST',       env('MAIL_HOST',       'smtp.gmail.com'));
 define('MAIL_PORT',       (int) env('MAIL_PORT', 587));
 define('MAIL_USERNAME',   env('MAIL_USERNAME',   ''));
 define('MAIL_PASSWORD',   env('MAIL_PASSWORD',   ''));
 define('MAIL_ENCRYPTION', env('MAIL_ENCRYPTION', 'tls'));
 define('MAIL_FROM_NAME',  env('MAIL_FROM_NAME',  APP_NAME));
-
-// Brevo Transactional Email API (used for all app mail — works over HTTPS, unaffected by the SMTP block)
-define('BREVO_API_KEY',      env('BREVO_API_KEY',      ''));
-define('BREVO_SENDER_EMAIL', env('BREVO_SENDER_EMAIL', MAIL_USERNAME));
-define('BREVO_SENDER_NAME',  env('BREVO_SENDER_NAME',  MAIL_FROM_NAME));
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
 // $global_theme is set dynamically from DB settings in the router / controllers.

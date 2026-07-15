@@ -5,7 +5,12 @@ require_once BASE_PATH.'/app/models/Product.php';
 require_once BASE_PATH.'/app/models/ad_category.php';
 require_once BASE_PATH.'/app/models/NewsletterSubscriber.php';
 require_once BASE_PATH.'/app/services/ApiService.php';
-require_once BASE_PATH . '/app/services/MailService.php';
+require BASE_PATH . '/app/libraries/PHPMailer/src/Exception.php';
+require BASE_PATH . '/app/libraries/PHPMailer/src/PHPMailer.php';
+require BASE_PATH . '/app/libraries/PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class ProductController{
 
@@ -564,7 +569,21 @@ require BASE_PATH.'/app/views/admin/layout.php';
         if (!empty($subscribers)) {
             foreach ($subscribers as $subscriberEmail) {
                 try {
-                    $mailBody = "
+                    $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
+                    $mail->isSMTP();
+                    $mail->Host = MAIL_HOST;
+                    $mail->SMTPAuth = true;
+                    $mail->Username = MAIL_USERNAME;
+                    $mail->Password = MAIL_PASSWORD;
+                    $mail->SMTPSecure = MAIL_ENCRYPTION;
+                    $mail->Port = MAIL_PORT;
+
+                    $mail->setFrom(MAIL_USERNAME, APP_NAME);
+                    $mail->addAddress($subscriberEmail);
+                    $mail->isHTML(true);
+                    $mail->Subject = "New Product Launched: {$product['name']}";
+                    $mail->Body = "
                         <div style='font-family:Arial,sans-serif;padding:20px;color:#111;'>
                             <h2>New Arrival Alert</h2>
                             <p>We have just added a new product to StitchSmart:</p>
@@ -576,10 +595,10 @@ require BASE_PATH.'/app/views/admin/layout.php';
                             <p>Thank you for staying with us.</p>
                         </div>
                     ";
-                    $altBody = "New Arrival: {$product['name']} is now available for Rs {$product['price']}.";
-                    MailService::send($subscriberEmail, '', "New Product Launched: {$product['name']}", $mailBody, $altBody);
-                } catch (\Throwable $e) {
-                    error_log('Newsletter product email error: ' . $e->getMessage());
+                    $mail->AltBody = "New Arrival: {$product['name']} is now available for Rs {$product['price']}.";
+                    $mail->send();
+                } catch (Exception $e) {
+                    error_log('Newsletter product email error: ' . $mail->ErrorInfo);
                 }
             }
         }
@@ -590,7 +609,21 @@ require BASE_PATH.'/app/views/admin/layout.php';
     private function sendAdminNewProductAlert($product, $count)
     {
         try {
-            $mailBody = "
+            $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
+            $mail->isSMTP();
+            $mail->Host = MAIL_HOST;
+            $mail->SMTPAuth = true;
+            $mail->Username = MAIL_USERNAME;
+            $mail->Password = MAIL_PASSWORD;
+            $mail->SMTPSecure = MAIL_ENCRYPTION;
+            $mail->Port = MAIL_PORT;
+
+            $mail->setFrom(MAIL_USERNAME, APP_NAME . ' Notifications');
+            $mail->addAddress(MAIL_USERNAME);
+            $mail->isHTML(true);
+            $mail->Subject = 'New product added: ' . $product['name'];
+            $mail->Body = "
                 <div style='font-family:Arial,sans-serif;padding:20px;color:#111;'>
                     <h2>New product published</h2>
                     <p>Product: <strong>{$product['name']}</strong></p>
@@ -598,23 +631,37 @@ require BASE_PATH.'/app/views/admin/layout.php';
                     <p>Subscribers notified: {$count}</p>
                 </div>
             ";
-            $altBody = 'New product added: ' . $product['name'] . ' (notified ' . $count . ' subscribers).';
-            MailService::send(MAIL_USERNAME, APP_NAME . ' Notifications', 'New product added: ' . $product['name'], $mailBody, $altBody);
-        } catch (\Throwable $e) {
-            error_log('Admin product alert mail error: ' . $e->getMessage());
+            $mail->AltBody = 'New product added: ' . $product['name'] . ' (notified ' . $count . ' subscribers).';
+            $mail->send();
+        } catch (Exception $e) {
+            error_log('Admin product alert mail error: ' . $mail->ErrorInfo);
         }
     }
 
     private function sendStockAlertMail($product, $remainingQty, $type)
     {
+        $mail = new PHPMailer(true);
+        $mail->Timeout = 15;
         try {
+            $mail->isSMTP();
+            $mail->Host       = MAIL_HOST;
+            $mail->SMTPAuth   = true;
+            $mail->Username   = MAIL_USERNAME;
+            $mail->Password   = MAIL_PASSWORD;
+            $mail->SMTPSecure = MAIL_ENCRYPTION;
+            $mail->Port       = MAIL_PORT;
+
+            $mail->setFrom(MAIL_USERNAME, 'StitchSmart Stock Alert');
+            $mail->addAddress(MAIL_USERNAME);
+            $mail->isHTML(true);
+
             $productName   = htmlspecialchars($product['name'] ?? '');
             $articleNumber = htmlspecialchars($product['article_number'] ?? '');
             $productId     = (int)($product['id'] ?? 0);
             $productPrice  = number_format((float)($product['price'] ?? 0));
 
             if ($type === 'out_of_stock') {
-                $subject       = 'Out of Stock (Admin Update): ' . $productName;
+                $mail->Subject = 'Out of Stock (Admin Update): ' . $productName;
                 $badgeStyle    = 'background-color: rgba(220, 53, 69, 0.1); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.3);';
                 $badgeText     = 'OUT OF STOCK — ADMIN UPDATE';
                 $headingColor  = '#dc3545';
@@ -622,7 +669,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
                 $stockText     = '0 Units';
                 $bodyText      = 'The following product has been manually set to <strong>Out of Stock</strong> via the Admin Dashboard.';
             } else {
-                $subject       = 'Low Stock Warning (Admin Update): ' . $productName;
+                $mail->Subject = 'Low Stock Warning (Admin Update): ' . $productName;
                 $badgeStyle    = 'background-color: rgba(205, 154, 72, 0.15); color: #c19a4e; border: 1px solid rgba(193, 154, 78, 0.4);';
                 $badgeText     = 'LOW STOCK WARNING — ADMIN UPDATE';
                 $headingColor  = '#c19a4e';
@@ -631,7 +678,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
                 $bodyText      = 'The following product has been manually updated to a <strong>Low Stock</strong> level (&le; 10 units) via the Admin Dashboard.';
             }
 
-            $mailBody = "
+            $mail->Body = "
             <div style='font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif; background-color: #fdfcf9; padding: 40px 0; color: #1a1a1a;'>
                 <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(193, 154, 78, 0.2);'>
 
@@ -694,9 +741,9 @@ require BASE_PATH.'/app/views/admin/layout.php';
             </div>
             ";
 
-            MailService::send(MAIL_USERNAME, 'StitchSmart Stock Alert', $subject, $mailBody);
-        } catch (\Throwable $e) {
-            error_log('Admin Stock Alert Mail Error: ' . $e->getMessage());
+            $mail->send();
+        } catch (Exception $e) {
+            error_log('Admin Stock Alert Mail Error: ' . $mail->ErrorInfo);
         }
     }
 

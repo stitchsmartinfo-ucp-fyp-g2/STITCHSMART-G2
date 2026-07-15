@@ -567,39 +567,42 @@ require BASE_PATH.'/app/views/admin/layout.php';
         $subscribers = $subscriberModel->getAll();
 
         if (!empty($subscribers)) {
-            foreach ($subscribers as $subscriberEmail) {
-                try {
-                    $mail = new PHPMailer(true);
-        $mail->Timeout = 15;
-                    $mail->isSMTP();
-                    $mail->Host = MAIL_HOST;
-                    $mail->SMTPAuth = true;
-                    $mail->Username = MAIL_USERNAME;
-                    $mail->Password = MAIL_PASSWORD;
-                    $mail->SMTPSecure = MAIL_ENCRYPTION;
-                    $mail->Port = MAIL_PORT;
+            try {
+                $mail = new PHPMailer(true);
+                $mail->Timeout = 5;
+                $mail->isSMTP();
+                $mail->Host = MAIL_HOST;
+                $mail->SMTPAuth = true;
+                $mail->Username = MAIL_USERNAME;
+                $mail->Password = MAIL_PASSWORD;
+                $mail->SMTPSecure = MAIL_ENCRYPTION;
+                $mail->Port = MAIL_PORT;
 
-                    $mail->setFrom(MAIL_USERNAME, APP_NAME);
-                    $mail->addAddress($subscriberEmail);
-                    $mail->isHTML(true);
-                    $mail->Subject = "New Product Launched: {$product['name']}";
-                    $mail->Body = "
-                        <div style='font-family:Arial,sans-serif;padding:20px;color:#111;'>
-                            <h2>New Arrival Alert</h2>
-                            <p>We have just added a new product to StitchSmart:</p>
-                            <p><strong>{$product['name']}</strong></p>
-                            <p>Price: Rs {$product['price']}</p>
-                            <p>{$product['details']}</p>
-                            <p><a href='" . url("product_show?id={$product['id']}") . "' style='color:#c19a4e;'>View product now</a></p>
-                            <hr>
-                            <p>Thank you for staying with us.</p>
-                        </div>
-                    ";
-                    $mail->AltBody = "New Arrival: {$product['name']} is now available for Rs {$product['price']}.";
-                    $mail->send();
-                } catch (Exception $e) {
-                    error_log('Newsletter product email error: ' . $mail->ErrorInfo);
+                $mail->setFrom(MAIL_USERNAME, APP_NAME);
+                $mail->addAddress(MAIL_USERNAME); // Primary to us, BCC to subscribers
+                
+                foreach ($subscribers as $subscriberEmail) {
+                    $mail->addBCC($subscriberEmail);
                 }
+                
+                $mail->isHTML(true);
+                $mail->Subject = "New Product Launched: {$product['name']}";
+                $mail->Body = "
+                    <div style='font-family:Arial,sans-serif;padding:20px;color:#111;'>
+                        <h2>New Arrival Alert</h2>
+                        <p>We have just added a new product to StitchSmart:</p>
+                        <p><strong>{$product['name']}</strong></p>
+                        <p>Price: Rs {$product['price']}</p>
+                        <p>{$product['details']}</p>
+                        <p><a href='" . url("product_show?id={$product['id']}") . "' style='color:#c19a4e;'>View product now</a></p>
+                        <hr>
+                        <p>Thank you for staying with us.</p>
+                    </div>
+                ";
+                $mail->AltBody = "New Arrival: {$product['name']} is now available for Rs {$product['price']}.";
+                $mail->send();
+            } catch (Exception $e) {
+                // log or ignore error so it doesn't crash the product creation
             }
         }
 

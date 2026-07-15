@@ -266,7 +266,7 @@ class ApiService {
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, 500);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
         curl_exec($ch);
-        curl_close($ch);
+
         // Ignore any response — chatbot updates asynchronously in the background
     }
 
@@ -297,10 +297,10 @@ class ApiService {
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if(curl_errno($ch)){
             $error = curl_error($ch);
-            curl_close($ch);
+
             return ['error' => $error];
         }
-        curl_close($ch);
+
 
         if ($httpCode < 200 || $httpCode >= 300) {
             return ['error' => 'Chatbot endpoint returned HTTP ' . $httpCode];

@@ -175,9 +175,6 @@ if (isset($_SESSION['cart'])) {
                     
                     <div class="d-flex align-items-center gap-2">
                         <?php if (!empty($_SESSION['customer_id'])): ?>
-                            <span class="btn btn-action btn-unified text-warning fw-bold px-3" style="cursor: default; background: rgba(202, 151, 69, 0.12); border-color: rgba(202, 151, 69, 0.35);">
-                                <i class="bi bi-person-fill me-2"></i><?= htmlspecialchars($_SESSION['customer_name'] ?? 'Account'); ?>
-                            </span>
                             <a href="<?= url('customer_logout'); ?>" class="btn btn-action btn-unified" title="Logout">
                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
                             </a>

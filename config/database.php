@@ -15,6 +15,7 @@ class Database
     private int    $port;
 
     public mysqli $conn;
+    private static ?mysqli $sharedConn = null;
 
     public function __construct()
     {
@@ -76,6 +77,12 @@ class Database
      */
     public function connect(): mysqli
     {
+        // ── Singleton: return the shared connection if it's already active ──
+        if (self::$sharedConn !== null) {
+            $this->conn = self::$sharedConn;
+            return self::$sharedConn;
+        }
+
         try {
             $driver = mysqli_init();
             $driver->options(MYSQLI_OPT_CONNECT_TIMEOUT, 2);
@@ -97,6 +104,11 @@ class Database
             }
 
             $this->conn->set_charset('utf8mb4');
+            
+            // Fix Railway only_full_group_by errors
+            $this->conn->query("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+
+            self::$sharedConn = $this->conn;
             return $this->conn;
         } catch (Throwable $e) {
             $msg = defined('APP_DEBUG') && APP_DEBUG

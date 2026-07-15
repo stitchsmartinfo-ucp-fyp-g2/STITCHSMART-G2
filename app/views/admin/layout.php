@@ -49,9 +49,9 @@ if (class_exists('Database')) {
         </div>
 
         <!-- Center: System Status Pill -->
-        <div class="d-none d-lg-flex align-items-center gap-2 px-3 py-1 rounded-pill shadow-sm" style="background: linear-gradient(135deg, #ffffff, #fdf6ec); border: 1px solid #ca9745; font-size: 0.86rem; color: #1a0f0a; font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 2px 8px rgba(202, 151, 69, 0.2) !important;">
-            <span class="d-inline-block rounded-circle" style="width: 9px; height: 9px; background-color: #ffc107 !important; box-shadow: 0 0 10px #ffc107, 0 0 3px #ffc107;"></span>
-            <span>System Active • Storefront Online</span>
+        <div class="d-none d-lg-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm" style="<?= ($theme === 'theme-luxury') ? 'background: linear-gradient(135deg, #1f140e, #0a0503); border: 1px solid #e8c547; color: #e8c547; box-shadow: 0 0 15px rgba(232, 197, 71, 0.4), inset 0 0 10px rgba(232, 197, 71, 0.1) !important;' : 'background: linear-gradient(135deg, #ffffff, #fdf6ec); border: 1px solid #ca9745; color: #1a0f0a; box-shadow: 0 2px 8px rgba(202, 151, 69, 0.2) !important;' ?> font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px;">
+            <span class="d-inline-block rounded-circle" style="width: 10px; height: 10px; background-color: #00ff88 !important; box-shadow: 0 0 12px #00ff88, 0 0 4px #00ff88;"></span>
+            <span class="<?= ($theme === 'theme-luxury') ? 'text-uppercase' : '' ?>">System Active • Storefront Online</span>
         </div>
 
         <!-- Right: Grouped Tools (Theme Toggle + Notifications + Admin Avatar) -->

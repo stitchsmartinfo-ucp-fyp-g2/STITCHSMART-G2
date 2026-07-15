@@ -523,7 +523,7 @@ body {
       <div class="sticky-summary-card">
         
         <!-- Welcome back panel -->
-        <?php if(!isset($_SESSION['customer_logged_in'])): ?>
+        <?php if(empty($_SESSION['customer_id'])): ?>
         <div class="card p-4 mb-4 checkout-surface checkout-account-card" style="background: #ffffff !important; border: 1px solid rgba(205, 154, 72, 0.22) !important; border-radius:16px; box-shadow: 0 16px 44px rgba(92, 67, 53, 0.04) !important;">
             <div class="checkout-account-header">
                 <h5 class="mb-0 checkout-account-copy" style="color:#3D241C !important; font-weight:700;">Complete Order Faster</h5>

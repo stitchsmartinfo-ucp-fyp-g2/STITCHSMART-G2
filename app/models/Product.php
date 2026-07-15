@@ -237,9 +237,9 @@ public function updateProduct($data){
 public function createProduct($data){
     $stmt = $this->conn->prepare("
         INSERT INTO product
-        (article_number,Fabric_Type, name, description, details, image_url, size, price, parent_cat,
+        (article_number,Fabric_Type, name, description, details, image_url, img2, img3, document, size, price, parent_cat,
         meta_title, meta_description, meta_keywords,  slug, Designing, quantity)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, '', '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
     if(!$stmt){

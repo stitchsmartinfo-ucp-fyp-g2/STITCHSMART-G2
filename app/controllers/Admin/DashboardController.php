@@ -274,6 +274,23 @@ class DashboardController {
             header("Location: " . url("") . "admin");
             exit;
         }
+        
+        if(isset($_POST['save_social_info'])) {
+            $facebook = trim($_POST['facebook'] ?? '');
+            $instagram = trim($_POST['instagram'] ?? '');
+            $pinterest = trim($_POST['pinterest'] ?? '');
+            $linkdin = trim($_POST['linkdin'] ?? '');
+
+            $stmt = $conn->prepare("UPDATE web_settings SET facebook=?, instagram=?, pinterest=?, linkdin=? WHERE id=1");
+            $stmt->bind_param("ssss", $facebook, $instagram, $pinterest, $linkdin);
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "Social media links updated successfully!";
+            } else {
+                $_SESSION['error'] = "Failed to update social media links.";
+            }
+            header("Location: " . url("") . "homepage");
+            exit;
+        }
 
         if(isset($_POST['save_meta_info'])) {
             $meta_title = trim($_POST['meta_title'] ?? '');

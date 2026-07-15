@@ -20,9 +20,12 @@ session_set_cookie_params([
 ]);
 session_start(); // start session for admin login or user login
 
-$database = new Database();
-$conn = $database->connect();
-(new SchemaBootstrap($conn));
+if (empty($_SESSION['db_bootstrapped'])) {
+    $database = new Database();
+    $conn = $database->connect();
+    (new SchemaBootstrap($conn));
+    $_SESSION['db_bootstrapped'] = true;
+}
 
 // Load site-wide web settings so views can read selected theme
 require_once __DIR__ . '/../app/models/settings.php';

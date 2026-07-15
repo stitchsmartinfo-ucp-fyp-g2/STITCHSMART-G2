@@ -246,7 +246,7 @@ UPDATE CATEGORY
                 $_SESSION['errors'] = ['csrf' => 'Invalid security token. Please refresh the page and try again.'];
                 $_POST['id'] = $_POST['id'] ?? null;
                 if ($_POST['id']) {
-                    header("Location: " . url("") . "edit_category&id=" . $_POST['id']);
+                    header("Location: " . url("") . "edit_category?id=" . $_POST['id']);
                 }
                 exit;
             }
@@ -266,7 +266,7 @@ UPDATE CATEGORY
 
             if (!empty($errors)) {
                 $_SESSION['error'] = implode("<br>", $errors);
-                header("Location: " . url("") . "edit_category&id=" . $id);
+                header("Location: " . url("") . "edit_category?id=" . $id);
                 exit;
             }
 

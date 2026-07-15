@@ -84,7 +84,7 @@ extract($data);
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            header("Location: " . url("") . "edit_banner&id=" . $id);
+            header("Location: " . url("") . "edit_banner?id=" . $id);
             exit;
         }
 

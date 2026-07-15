@@ -19,12 +19,12 @@
 
         <div class="mb-4">
             <label for="text" class="form-label fw-bold">Banner Title / Headline <span class="text-danger">*</span></label>
-            <input type="text" id="text" name="text" class="form-control px-3 py-2" value="<?php echo htmlspecialchars($banner['alt'] ?? ''); ?>" required>
+            <input type="text" id="text" name="text" class="form-control px-3 py-2" value="<?php echo htmlspecialchars($banner['text'] ?? ''); ?>" required>
         </div>
         
         <div class="mb-4">
             <label for="alt" class="form-label fw-bold">Subtitle / Promotional Description <span class="text-danger">*</span></label>
-            <textarea id="alt" name="alt" class="form-control px-3 py-2" rows="3" required><?php echo htmlspecialchars($banner['text'] ?? ''); ?></textarea>
+            <textarea id="alt" name="alt" class="form-control px-3 py-2" rows="3" required><?php echo htmlspecialchars($banner['alt'] ?? ''); ?></textarea>
         </div>
 
         <div class="mb-4">

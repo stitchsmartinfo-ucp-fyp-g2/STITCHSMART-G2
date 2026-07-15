@@ -487,7 +487,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
 
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
-                header("Location: " . url("") . "edit_product&id=" . $id);
+                header("Location: " . url("") . "edit_product?id=" . $id);
                 exit;
             }
 

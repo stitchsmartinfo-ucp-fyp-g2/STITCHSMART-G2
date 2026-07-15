@@ -32,16 +32,13 @@ class Database
     public function connect(): mysqli
     {
         try {
-            $driver = mysqli_init();
-            $driver->options(MYSQLI_OPT_CONNECT_TIMEOUT, 8);
-            @$driver->real_connect(
+            $this->conn = @new mysqli(
                 $this->host,
                 $this->username,
                 $this->password,
                 $this->dbname,
                 $this->port
             );
-            $this->conn = $driver;
 
             if ($this->conn->connect_error) {
                 $msg = defined('APP_DEBUG') && APP_DEBUG

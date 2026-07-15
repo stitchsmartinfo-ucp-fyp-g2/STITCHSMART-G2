@@ -124,7 +124,7 @@ define('CHATBOT_API_TIMEOUT', (int) env('CHATBOT_API_TIMEOUT', 30));
 define('CHATBOT_API_TOKEN',   env('CHATBOT_API_TOKEN',   ''));
 
 // ── Mail ─────────────────────────────────────────────────────────────────────
-define('MAIL_HOST',       env('MAIL_HOST',       'smtp-relay.brevo.com'));
+define('MAIL_HOST',       env('MAIL_HOST',       'smtp.gmail.com'));
 define('MAIL_PORT',       (int) env('MAIL_PORT', 587));
 define('MAIL_USERNAME',   env('MAIL_USERNAME',   ''));
 define('MAIL_PASSWORD',   env('MAIL_PASSWORD',   ''));

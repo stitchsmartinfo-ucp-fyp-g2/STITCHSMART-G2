@@ -185,37 +185,68 @@ class ApiService {
                 }
             }
 
+            $stopWords = ['the','and','for','show','me','some','any','have','do','you','is','there','what','are','price','cost','give','can','please','tell','about','of','in','on','with','a','an'];
+            $userWords = array_filter(explode(' ', $cleanQ), function($w) use ($stopWords) {
+                return strlen($w) > 2 && !in_array($w, $stopWords);
+            });
+
             $matched = [];
             foreach ($products as $p) {
-                $pText = strtolower(trim((string)($p['product name'] ?? '') . ' ' . ($p['description'] ?? '') . ' ' . ($p['details'] ?? '') . ' ' . ($p['category'] ?? '')));
+                $pName = (string)($p['name'] ?? 'Product');
+                $pDesc = (string)($p['description'] ?? '');
+                $pDetails = (string)($p['details'] ?? '');
+                $pCat = (string)($p['category'] ?? '');
+                
+                $pText = strtolower(trim($pName . ' ' . $pDesc . ' ' . $pDetails . ' ' . $pCat));
                 $pVal = (float)preg_replace('/[^\d.]/', '', (string)($p['price'] ?? 0));
 
-                if ($askedColor && !str_contains($pText, $askedColor)) continue;
-                if ($maxPrice !== null && $pVal > $maxPrice) continue;
-                if ($minPrice !== null && $pVal < $minPrice) continue;
-                if ($isWomen && !preg_match('/(girl|women|ladies|female)/i', $pText)) continue;
-                if ($isMen && !preg_match('/(boy|men|male|mens)/i', $pText)) continue;
-                if ($isKid && !preg_match('/(kid|child|children)/i', $pText)) continue;
-                if ($askedType && !str_contains($pText, $askedType)) continue;
+                $keywordScore = 0;
+                foreach ($userWords as $w) {
+                    if (str_contains($pText, $w)) {
+                        $keywordScore++;
+                    }
+                }
 
-                $matched[] = $p;
+                // Filter flags
+                $failedFilter = false;
+                if ($askedColor && !str_contains($pText, $askedColor)) $failedFilter = true;
+                if ($maxPrice !== null && $pVal > $maxPrice) $failedFilter = true;
+                if ($minPrice !== null && $pVal < $minPrice) $failedFilter = true;
+                if ($isWomen && !preg_match('/(girl|women|ladies|female)/i', $pText)) $failedFilter = true;
+                if ($isMen && !preg_match('/(boy|men|male|mens)/i', $pText)) $failedFilter = true;
+                if ($isKid && !preg_match('/(kid|child|children)/i', $pText)) $failedFilter = true;
+                if ($askedType && !str_contains($pText, $askedType)) $failedFilter = true;
+
+                // Match if filters pass AND (it has keyword matches OR we are just filtering by criteria)
+                if (!$failedFilter && ($keywordScore > 0 || empty($userWords) || $askedColor || $maxPrice !== null || $minPrice !== null || $isWomen || $isMen || $isKid || $askedType)) {
+                    $p['score'] = $keywordScore;
+                    $matched[] = $p;
+                }
             }
 
-            // If exact match found
+            // Sort by keyword score descending
+            usort($matched, function($a, $b) {
+                return $b['score'] <=> $a['score'];
+            });
+
+            // If match found
             if (!empty($matched)) {
                 $reply = "✨ **Found " . count($matched) . " matching products for you!**\n\n";
                 $count = 0;
                 foreach ($matched as $m) {
                     $id = (int)($m['id'] ?? 0);
-                    $name = trim((string)($m['product name'] ?? 'Product'));
+                    $name = trim((string)($m['name'] ?? 'Product'));
                     $price = number_format((float)preg_replace('/[^\d.]/', '', (string)($m['price'] ?? 0)));
                     $cat = trim((string)($m['category'] ?? 'General'));
-                    $reply .= "• **[{$name}]({$baseUrl}product_show?id={$id})** - **Rs. {$price}** (*Category: {$cat}*)\n";
+                    $qty = (int)($m['quantity'] ?? 0);
+                    $stockText = $qty > 0 ? "✅ **{$qty} in stock**" : "❌ **Out of stock**";
+                    
+                    $reply .= "• **[{$name}]({$baseUrl}product_show?id={$id})** - **Rs. {$price}** (*{$cat}*) | {$stockText}\n";
                     $count++;
-                    if ($count >= 4) break;
+                    if ($count >= 5) break;
                 }
-                if (count($matched) > 4) {
-                    $reply .= "\nPlus **" . (count($matched) - 4) . " more items**! You can explore them all on our catalog:\n";
+                if (count($matched) > 5) {
+                    $reply .= "\nPlus **" . (count($matched) - 5) . " more items**! You can explore them all on our catalog:\n";
                 } else {
                     $reply .= "\nClick on any product above to view details, pick your size, and add to cart:\n";
                 }
@@ -224,8 +255,8 @@ class ApiService {
             }
 
             // If strict filters found no direct match, return general helpful matches
-            if ($askedColor || $maxPrice !== null || $askedType) {
-                return ['response' => "We currently don't have an exact item matching all your exact criteria in stock, but we have fantastic options across all categories!\n\nCheck out our latest collection here:\n**[Browse All Products]({$baseUrl}allproducts)**"];
+            if ($askedColor || $maxPrice !== null || $askedType || !empty($userWords)) {
+                return ['response' => "I couldn't find an exact item matching all your criteria in stock, but we have fantastic options across all categories!\n\nCheck out our latest collection here:\n**[Browse All Products]({$baseUrl}allproducts)**"];
             }
 
             return ['response' => "I would be happy to help you find the right product! You can ask me for recommendations by price (e.g. *'under 2000'*), by category (*'men shirts'*, *'women dresses'*), or by color (*'something blue'*). Or explore our full catalog:\n**[Browse All Products]({$baseUrl}allproducts)**"];

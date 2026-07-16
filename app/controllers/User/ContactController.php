@@ -49,7 +49,7 @@ class ContactController
                 $mail->setFrom(MAIL_FROM_ADDRESS, 'Website Contact');
 
                 // TO
-                $mail->addAddress(MAIL_USERNAME);
+                $mail->addAddress(MAIL_FROM_ADDRESS);
 
                 // REPLY TO USER
                 $mail->addReplyTo($email, $name);

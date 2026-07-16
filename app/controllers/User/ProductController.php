@@ -593,7 +593,7 @@ private function sendRestockRequestMail($product)
         $mail->Port     = MAIL_PORT;
 
         $mail->setFrom(MAIL_FROM_ADDRESS, 'Stock Restock Alert');
-        $mail->addAddress(MAIL_USERNAME, 'Stitch Smart Admin');
+        $mail->addAddress(MAIL_FROM_ADDRESS, 'Stitch Smart Admin');
 
         $mail->isHTML(true);
         $mail->Subject = "Restock Needed: " . $product['name'] . " (Out of Stock)";

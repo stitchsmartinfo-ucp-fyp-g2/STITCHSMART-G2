@@ -399,7 +399,7 @@ private function sendOutOfStockMail($product)
         $mail->setFrom(MAIL_FROM_ADDRESS, 'Stock Alert');
 
         // admin email
-        $mail->addAddress(MAIL_USERNAME);
+        $mail->addAddress(MAIL_FROM_ADDRESS);
 
         $mail->isHTML(true);
 
@@ -496,7 +496,7 @@ private function sendLowStockMail($product, $remainingQty)
         $mail->setFrom(MAIL_FROM_ADDRESS, 'Stock Alert');
 
         // admin email
-        $mail->addAddress(MAIL_USERNAME);
+        $mail->addAddress(MAIL_FROM_ADDRESS);
 
         $mail->isHTML(true);
 

@@ -108,7 +108,7 @@ class NewsletterController {
             $mail->Port = MAIL_PORT;
 
             $mail->setFrom(MAIL_FROM_ADDRESS, APP_NAME . ' Notifications');
-            $mail->addAddress(MAIL_USERNAME);
+            $mail->addAddress(MAIL_FROM_ADDRESS);
             $mail->isHTML(true);
             $mail->Subject = 'New Newsletter Subscriber';
             $mail->Body = "

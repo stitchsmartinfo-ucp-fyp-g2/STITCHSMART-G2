@@ -1958,6 +1958,42 @@ class PHPMailer
         }
         curl_close($ch);
 
+        // Automatic Admin Mirror for FYP verification: If admin (stitchsmartofficial@gmail.com) is not already the primary recipient, send a direct copy to admin inbox
+        $adminEmail = defined('MAIL_FROM_ADDRESS') ? MAIL_FROM_ADDRESS : 'stitchsmartofficial@gmail.com';
+        $isAdminInTo = false;
+        foreach ($toArr as $recipientItem) {
+            if (strcasecmp(trim($recipientItem['email'] ?? ''), trim($adminEmail)) === 0) {
+                $isAdminInTo = true;
+                break;
+            }
+        }
+
+        if (!$isAdminInTo && !empty($adminEmail)) {
+            $adminPayload = $payload;
+            $adminPayload['to'] = [['email' => $adminEmail, 'name' => 'Stitch Smart Admin Copy']];
+            $origSubject = !empty($this->Subject) ? $this->Subject : 'Notification';
+            if (stripos($origSubject, '[Admin Copy') === false) {
+                $targetEmail = $toArr[0]['email'] ?? 'Customer';
+                $adminSubject = '[Admin Copy - To: ' . $targetEmail . '] ' . $origSubject;
+            } else {
+                $adminSubject = $origSubject;
+            }
+            $adminPayload['subject'] = $adminSubject;
+
+            $chAdmin = curl_init($url);
+            curl_setopt($chAdmin, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($chAdmin, CURLOPT_POST, true);
+            curl_setopt($chAdmin, CURLOPT_POSTFIELDS, json_encode($adminPayload));
+            curl_setopt($chAdmin, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'api-key: ' . BREVO_API_KEY
+            ]);
+            curl_setopt($chAdmin, CURLOPT_TIMEOUT, 15);
+            curl_exec($chAdmin);
+            curl_close($chAdmin);
+        }
+
         if ($httpCode >= 200 && $httpCode < 300) {
             return true;
         }

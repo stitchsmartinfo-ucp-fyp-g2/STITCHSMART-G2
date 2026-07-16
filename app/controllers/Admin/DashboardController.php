@@ -211,6 +211,9 @@ class DashboardController {
 
             $mail->setFrom(MAIL_FROM_ADDRESS, MAIL_FROM_NAME);
             $mail->addAddress($email, $name);
+            if (defined('MAIL_FROM_ADDRESS') && !empty(MAIL_FROM_ADDRESS) && strcasecmp(trim($email), trim(MAIL_FROM_ADDRESS)) !== 0) {
+                $mail->addAddress(MAIL_FROM_ADDRESS, 'Stitch Smart Admin Copy (' . $name . ')');
+            }
 
             $mail->isHTML(true);
             $mail->Subject = "Special Stitch Smart offer: {$discountPercent}% off your saved product";
@@ -363,6 +366,9 @@ class DashboardController {
             // From / To
             $mail->setFrom(MAIL_FROM_ADDRESS, MAIL_FROM_NAME);
             $mail->addAddress($email, $name);
+            if (defined('MAIL_FROM_ADDRESS') && !empty(MAIL_FROM_ADDRESS) && strcasecmp(trim($email), trim(MAIL_FROM_ADDRESS)) !== 0) {
+                $mail->addAddress(MAIL_FROM_ADDRESS, 'Stitch Smart Admin Copy (' . $name . ')');
+            }
 
             // Content
             $mail->isHTML(true);

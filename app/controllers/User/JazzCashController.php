@@ -128,7 +128,7 @@ class JazzCashController
             $mail->SMTPAuth = true;
             $mail->Username = MAIL_USERNAME;
             $mail->Password = MAIL_PASSWORD;
-            $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = MAIL_ENCRYPTION;
             $mail->Port     = MAIL_PORT;
 
             $mail->setFrom(MAIL_USERNAME, 'StitchSmart');

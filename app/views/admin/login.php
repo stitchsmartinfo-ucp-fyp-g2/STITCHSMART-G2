@@ -134,6 +134,20 @@
             background: rgba(255,255,255,0.15) !important;
             border-color: #fff !important;
             box-shadow: none !important;
+            caret-color: #fff;
+        }
+
+        /* Fix browser autocomplete white background overriding dark input */
+        .form-control:-webkit-autofill,
+        .form-control:-webkit-autofill:hover,
+        .form-control:-webkit-autofill:focus,
+        .form-control:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px #2a1810 inset !important;
+            -webkit-text-fill-color: #fff !important;
+            caret-color: #fff !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            border-radius: 15px !important;
+            transition: background-color 5000s ease-in-out 0s;
         }
 
         .extra-links {

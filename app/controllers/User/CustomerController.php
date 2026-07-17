@@ -139,7 +139,7 @@ class CustomerController {
             $submittedToken = $_POST['csrf_token'] ?? '';
             if (!is_string($submittedToken) || !hash_equals($_SESSION['csrf_token'], $submittedToken)) {
                 $_SESSION['register_error'] = "Invalid security token. Please refresh the page and try again.";
-                $redirect = preg_replace('/[^a-zA-Z0-9_\-]/', '', (string)($_POST['redirect'] ?? 'home')) ?: 'home';
+                $redirect = preg_replace('/[^a-zA-Z0-9_\-]/', '', (string)($_POST['redirect'] ?? 'customer_login')) ?: 'customer_login';
                 header("Location: " . url("") . "" . $redirect);
                 exit;
             }
@@ -149,7 +149,7 @@ class CustomerController {
             $email = strtolower(trim((string)($_POST['email'] ?? '')));
             $password = (string)($_POST['password'] ?? '');
             $confirmPassword = (string)($_POST['confirm_password'] ?? '');
-            $redirect = preg_replace('/[^a-zA-Z0-9_\-]/', '', (string)($_POST['redirect'] ?? 'home')) ?: 'home';
+            $redirect = preg_replace('/[^a-zA-Z0-9_\-]/', '', (string)($_POST['redirect'] ?? 'customer_login')) ?: 'customer_login';
 
             if (empty($name) || empty($email) || empty($password) || empty($confirmPassword)) {
                 $_SESSION['register_error'] = "Please fill in all required fields.";

@@ -233,61 +233,56 @@ public function show(){
     $category = $this->categoryModel->getCategoryById($product['parent_cat']);
     $category_name = $category['c_name'] ?? 'Unknown Category';
 
-    // Fetch related products: AI-based using search history/clicks if logged in
+    // Fetch related products: ONLY for logged-in users
     $related_products = [];
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    
-    $activeSearch = $_SESSION['last_search'] ?? null;
-    
-    if ($activeSearch && trim($activeSearch) !== '' && strtolower(trim($activeSearch)) !== 'init') {
-        // Fetch products matching the search query
-        $searchResults = $this->productModel->searchProducts($activeSearch);
-        
-        // Exclude the current product
-        foreach ($searchResults as $item) {
-            if ((int)$item['id'] !== (int)$product['id']) {
-                $related_products[] = $item;
-            }
-        }
-        
-        // Limit to 4 products
-        $related_products = array_slice($related_products, 0, 4);
+
+    // ── GUEST CHECK: No related products for guests ──
+    if (empty($_SESSION['customer_id'])) {
+        // $related_products stays [] → view will show "Sign In & Discover" prompt
     } else {
-        // Default behavior (No active search)
-        $userId = $_SESSION['customer_id'] ?? null;
-        if (!$userId) {
-            $userId = -((abs(crc32(session_id())) % 1000000) + 1);
-        }
-        if ($userId) {
-            $related_products = $this->productModel->getAiRecommendedProducts($userId, $product['id'], $product['parent_cat'], 4);
-        }
-        
-        // If we have fewer than 4 items (or if guest user, which has 0 items so far), backfill with products from the same category
-        if (count($related_products) < 4) {
-            $existing_ids = array_map(function($p) { return (int)$p['id']; }, $related_products);
-            $existing_ids[] = (int)$product['id'];
-            
-            $cat_related = $this->productModel->getRelatedProducts($product['parent_cat'], $product['id'], 10);
-            foreach ($cat_related as $cp) {
-                if (count($related_products) >= 4) break;
-                if (!in_array((int)$cp['id'], $existing_ids)) {
-                    $related_products[] = $cp;
-                    $existing_ids[] = (int)$cp['id'];
+        // ── LOGGED-IN USER: search-based or AI-based ──
+        $activeSearch = $_SESSION['last_search'] ?? null;
+
+        if ($activeSearch && trim($activeSearch) !== '' && strtolower(trim($activeSearch)) !== 'init') {
+            // Filter by active search keyword
+            $searchResults = $this->productModel->searchProducts($activeSearch);
+            foreach ($searchResults as $item) {
+                if ((int)$item['id'] !== (int)$product['id']) {
+                    $related_products[] = $item;
                 }
             }
-        }
+            $related_products = array_slice($related_products, 0, 4);
+        } else {
+            // AI-based recommendations for logged-in user
+            $userId = (int)$_SESSION['customer_id'];
+            $related_products = $this->productModel->getAiRecommendedProducts($userId, $product['id'], $product['parent_cat'], 4);
 
-        // If STILL fewer than 4 items, universal backfill from all categories
-        if (count($related_products) < 4) {
-            $existing_ids = array_map(function($p) { return (int)$p['id']; }, $related_products);
-            $existing_ids[] = (int)$product['id'];
-            
-            $needed = 4 - count($related_products);
-            $fallback_items = $this->productModel->getFallbackProducts($existing_ids, $needed);
-            foreach ($fallback_items as $fp) {
-                $related_products[] = $fp;
+            // Backfill from same category if fewer than 4
+            if (count($related_products) < 4) {
+                $existing_ids = array_map(function($p) { return (int)$p['id']; }, $related_products);
+                $existing_ids[] = (int)$product['id'];
+                $cat_related = $this->productModel->getRelatedProducts($product['parent_cat'], $product['id'], 10);
+                foreach ($cat_related as $cp) {
+                    if (count($related_products) >= 4) break;
+                    if (!in_array((int)$cp['id'], $existing_ids)) {
+                        $related_products[] = $cp;
+                        $existing_ids[] = (int)$cp['id'];
+                    }
+                }
+            }
+
+            // Universal fallback if still fewer than 4
+            if (count($related_products) < 4) {
+                $existing_ids = array_map(function($p) { return (int)$p['id']; }, $related_products);
+                $existing_ids[] = (int)$product['id'];
+                $needed = 4 - count($related_products);
+                $fallback_items = $this->productModel->getFallbackProducts($existing_ids, $needed);
+                foreach ($fallback_items as $fp) {
+                    $related_products[] = $fp;
+                }
             }
         }
     }

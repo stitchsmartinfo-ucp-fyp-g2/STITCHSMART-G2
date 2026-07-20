@@ -330,7 +330,7 @@ public function toggleWishlist()
 
     $userId = $_SESSION['customer_id'] ?? null;
     if (empty($userId)) {
-        $_SESSION['wishlist_error'] = "Please login to save products to your wishlist.";
+        $_SESSION['error'] = "Please login to save products to your wishlist.";
         header("Location: " . url("") . "customer_login");
         exit;
     }
@@ -341,14 +341,14 @@ public function toggleWishlist()
 
     if (!is_string($submittedToken) || !hash_equals($_SESSION['csrf_token'], $submittedToken)) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        $_SESSION['wishlist_error'] = "Security token expired. The page refreshed; please try again.";
+        $_SESSION['error'] = "Security token expired. The page refreshed; please try again.";
         $redirectUrl = $this->resolveRedirectUrl($redirectTo, $productId);
         header("Location: " . $redirectUrl);
         exit;
     }
 
     if ($productId <= 0) {
-        $_SESSION['wishlist_error'] = "Invalid product selected.";
+        $_SESSION['error'] = "Invalid product selected.";
         header("Location: " . url("") . "home");
         exit;
     }
@@ -360,10 +360,10 @@ public function toggleWishlist()
     $isWishlisted = $wishlistBootstrap->isWishlisted((int)$userId, $productId);
     if ($isWishlisted) {
         $wishlistBootstrap->removeWishlistItem((int)$userId, $productId);
-        $_SESSION['wishlist_success'] = "Product removed from your wishlist.";
+        $_SESSION['success'] = "Product removed from your wishlist.";
     } else {
         $wishlistBootstrap->addWishlistItem((int)$userId, $productId);
-        $_SESSION['wishlist_success'] = "Product added to your wishlist.";
+        $_SESSION['success'] = "Product added to your wishlist.";
     }
 
     $redirectUrl = $this->resolveRedirectUrl($redirectTo, $productId);
@@ -380,7 +380,7 @@ public function customerWishlist()
 
     $userId = $_SESSION['customer_id'] ?? null;
     if (!$userId) {
-        $_SESSION['wishlist_error'] = "Please login to view your wishlist.";
+        $_SESSION['error'] = "Please login to view your wishlist.";
         header("Location: " . url("") . "customer_login");
         exit;
     }

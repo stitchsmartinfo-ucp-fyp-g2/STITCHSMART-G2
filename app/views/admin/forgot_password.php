@@ -86,6 +86,22 @@
             border-radius: 15px !important;
             color: #fff !important;
             margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: var(--accent-bronze) !important;
+            color: #fff !important;
+            box-shadow: 0 0 0 3px rgba(202, 151, 69, 0.25) !important;
+        }
+
+        .form-control:-webkit-autofill,
+        .form-control:-webkit-autofill:hover, 
+        .form-control:-webkit-autofill:focus, 
+        .form-control:-webkit-autofill:active {
+            transition: background-color 5000s ease-in-out 0s !important;
+            -webkit-text-fill-color: #fff !important;
         }
 
         .btn-recover {

@@ -386,19 +386,7 @@ $seoUrl = url('product_show?id=' . $product['id']);
                 </div>
             </form>
 
-            <?php if (isset($_SESSION['wishlist_error'])): ?>
-                <div class="alert alert-danger mt-3" role="alert" style="background-color: rgba(220, 53, 69, 0.15); border: 1px solid rgba(220, 53, 69, 0.35); color: #f8d7da;">
-                    <i class="fas fa-exclamation-circle me-2"></i> <?= htmlspecialchars($_SESSION['wishlist_error']); ?>
-                </div>
-                <?php unset($_SESSION['wishlist_error']); ?>
-            <?php endif; ?>
 
-            <?php if (isset($_SESSION['wishlist_success'])): ?>
-                <div class="alert alert-success mt-3" role="alert" style="background-color: rgba(25, 135, 84, 0.15); border: 1px solid rgba(25, 135, 84, 0.35); color: #d1e7dd;">
-                    <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($_SESSION['wishlist_success']); ?>
-                </div>
-                <?php unset($_SESSION['wishlist_success']); ?>
-            <?php endif; ?>
 
             <?php if (!empty($_SESSION['customer_id'])): ?>
                 <form method="POST" action="<?= url('wishlist_toggle') ?>" class="mt-3">

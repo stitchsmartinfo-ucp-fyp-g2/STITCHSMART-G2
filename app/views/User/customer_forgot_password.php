@@ -83,11 +83,21 @@
             color: #fff !important;
             margin-bottom: 20px;
             font-size: 1rem;
+            transition: all 0.3s ease;
         }
         .form-control:focus {
+            background: rgba(255,255,255,0.08) !important;
             box-shadow: 0 0 0 3px rgba(205,154,72,0.25) !important;
             border-color: rgba(205,154,72,0.5) !important;
+            color: #fff !important;
             outline: none;
+        }
+        .form-control:-webkit-autofill,
+        .form-control:-webkit-autofill:hover, 
+        .form-control:-webkit-autofill:focus, 
+        .form-control:-webkit-autofill:active {
+            transition: background-color 5000s ease-in-out 0s !important;
+            -webkit-text-fill-color: #fff !important;
         }
         .form-control::placeholder { color: rgba(255,255,255,0.3); }
 

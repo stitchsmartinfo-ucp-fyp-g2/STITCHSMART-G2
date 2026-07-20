@@ -229,6 +229,8 @@ if (isset($_SESSION['errors'])) {
 }
 ?>
 
+<!-- Toast Container -->
+<div id="ss-toast-container" aria-live="polite" aria-atomic="false">
 <?php if (!empty($notifications)): ?>
     <?php foreach ($notifications as $n): ?>
         <div class="ss-toast ss-toast--<?= $n['type'] ?>" role="alert" aria-live="assertive">
@@ -246,9 +248,7 @@ if (isset($_SESSION['errors'])) {
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
-
-<!-- Toast Container -->
-<div id="ss-toast-container" aria-live="polite" aria-atomic="false"></div>
+</div>
 
 <style>
 /* ═══════════════════════════════════════════

@@ -538,14 +538,39 @@ $validatedTheme = in_array($requestedTheme, $allowedThemes, true) ? $requestedTh
                     const wrapper = document.createElement('div');
                     wrapper.className = 'color-wrapper';
                     wrapper.style.display = 'inline-block';
-                    wrapper.style.backgroundColor = 'var(--hoodie-color)';
+                    wrapper.style.position = 'relative';
                     wrapper.style.borderRadius = '8px';
                     wrapper.style.overflow = 'hidden';
+
+                    const colorLayer = document.createElement('div');
+                    colorLayer.className = 'color-layer';
+                    colorLayer.style.position = 'absolute';
+                    colorLayer.style.top = '0';
+                    colorLayer.style.left = '0';
+                    colorLayer.style.width = '100%';
+                    colorLayer.style.height = '100%';
+                    colorLayer.style.backgroundColor = 'var(--hoodie-color)';
+                    colorLayer.style.mixBlendMode = 'multiply';
+                    colorLayer.style.pointerEvents = 'none';
+                    colorLayer.style.maskImage = `url("${img.src}")`;
+                    colorLayer.style.maskSize = '100% 100%';
+                    colorLayer.style.maskRepeat = 'no-repeat';
+                    colorLayer.style.maskPosition = 'center';
+                    colorLayer.style.webkitMaskImage = `url("${img.src}")`;
+                    colorLayer.style.webkitMaskSize = '100% 100%';
+                    colorLayer.style.webkitMaskRepeat = 'no-repeat';
+                    colorLayer.style.webkitMaskPosition = 'center';
+
                     img.parentNode.insertBefore(wrapper, img);
                     wrapper.appendChild(img);
-                    img.style.mixBlendMode = 'luminosity';
+                    wrapper.appendChild(colorLayer);
                 } else {
-                    img.parentElement.style.backgroundColor = color;
+                    const colorLayer = img.parentElement.querySelector('.color-layer');
+                    if (colorLayer) {
+                        colorLayer.style.backgroundColor = 'var(--hoodie-color)';
+                        colorLayer.style.maskImage = `url("${img.src}")`;
+                        colorLayer.style.webkitMaskImage = `url("${img.src}")`;
+                    }
                 }
             });
         }
@@ -704,7 +729,17 @@ $validatedTheme = in_array($requestedTheme, $allowedThemes, true) ? $requestedTh
             if (type === 'stitching') images = stitchingImages;
             if (type === 'distressing') images = distressingImages;
             const src = images[option] || '<?= BASE_URL ?>/pictures/design/empty_hoodie.png';
-            document.getElementById(`${type}Image`).src = src;
+            const img = document.getElementById(`${type}Image`);
+            if (img) {
+                img.src = src;
+                if (img.parentElement.classList.contains('color-wrapper')) {
+                    const colorLayer = img.parentElement.querySelector('.color-layer');
+                    if (colorLayer) {
+                        colorLayer.style.maskImage = `url("${src}")`;
+                        colorLayer.style.webkitMaskImage = `url("${src}")`;
+                    }
+                }
+            }
         }
 
         function nextStep(step) {

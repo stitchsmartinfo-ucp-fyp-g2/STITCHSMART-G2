@@ -709,12 +709,7 @@ if (isset($_SESSION['register_error'])) { $activeTab = 'signup'; }
               <!-- ── SIGN IN ── -->
               <div class="auth-tab-pane <?= $activeTab === 'signin' ? 'active' : '' ?>" id="pane-signin">
 
-                <?php if(isset($_SESSION['success'])): ?>
-                  <div class="auth-alert auth-alert-success">
-                    <i class="bi bi-check-circle-fill"></i>
-                    <?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
-                  </div>
-                <?php endif; ?>
+
                 <?php if(isset($_SESSION['login_error'])): ?>
                   <div class="auth-alert auth-alert-danger">
                     <i class="bi bi-exclamation-triangle-fill"></i>

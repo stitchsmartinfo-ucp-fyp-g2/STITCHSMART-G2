@@ -406,30 +406,54 @@ $validatedTheme = in_array($requestedTheme, $allowedThemes, true) ? $requestedTh
 
         function applyColorToPreviews(color) {
             document.documentElement.style.setProperty('--hoodie-color', color);
-            const imagesToColor = document.querySelectorAll('.dynamic-image, .preview-img');
+            const imagesToColor = document.querySelectorAll('.dynamic-image');
             imagesToColor.forEach(img => {
+                if (img.id === 'labelPreview' || img.id === 'designPreview') return;
+                
                 if(!img.parentElement.classList.contains('color-wrapper')){
                     const wrapper = document.createElement('div');
                     wrapper.className = 'color-wrapper';
                     wrapper.style.display = 'inline-block';
-                    wrapper.style.backgroundColor = 'var(--hoodie-color)';
+                    wrapper.style.position = 'relative';
                     wrapper.style.borderRadius = '8px';
                     wrapper.style.overflow = 'hidden';
+
+                    const colorLayer = document.createElement('div');
+                    colorLayer.className = 'color-layer';
+                    colorLayer.style.position = 'absolute';
+                    colorLayer.style.top = '0';
+                    colorLayer.style.left = '0';
+                    colorLayer.style.width = '100%';
+                    colorLayer.style.height = '100%';
+                    colorLayer.style.backgroundColor = 'var(--hoodie-color)';
+                    colorLayer.style.mixBlendMode = 'multiply';
+                    colorLayer.style.pointerEvents = 'none';
+                    colorLayer.style.maskImage = `url("${img.src}")`;
+                    colorLayer.style.maskSize = '100% 100%';
+                    colorLayer.style.maskRepeat = 'no-repeat';
+                    colorLayer.style.maskPosition = 'center';
+                    colorLayer.style.webkitMaskImage = `url("${img.src}")`;
+                    colorLayer.style.webkitMaskSize = '100% 100%';
+                    colorLayer.style.webkitMaskRepeat = 'no-repeat';
+                    colorLayer.style.webkitMaskPosition = 'center';
+
                     img.parentNode.insertBefore(wrapper, img);
                     wrapper.appendChild(img);
-                    img.style.mixBlendMode = 'multiply';
+                    wrapper.appendChild(colorLayer);
                 } else {
-                    img.parentElement.style.backgroundColor = color;
+                    const colorLayer = img.parentElement.querySelector('.color-layer');
+                    if (colorLayer) {
+                        colorLayer.style.backgroundColor = 'var(--hoodie-color)';
+                        colorLayer.style.maskImage = `url("${img.src}")`;
+                        colorLayer.style.webkitMaskImage = `url("${img.src}")`;
+                    }
                 }
             });
         }
 
         function updateSizeChart() {
             const fit = document.querySelector('input[name="fit"]:checked')?.value || 'Straight Leg';
-            const chart = sizeCharts[fit];
-            const imgSrc = fit === 'Straight Leg' ? '<?= BASE_URL ?>/pictures/design/pants_1_measures.png' : '<?= BASE_URL ?>/pictures/design/pants_2_measures.png';
-            document.getElementById('sizeChartImg').src = imgSrc;
-
+            const chart = sizeCharts[fit] || sizeCharts['Straight Leg'];
             const tbody = document.querySelector('#sizeChartTable tbody');
             tbody.innerHTML = '';
             chart.forEach(row => {
@@ -437,6 +461,18 @@ $validatedTheme = in_array($requestedTheme, $allowedThemes, true) ? $requestedTh
                 tr.innerHTML = `<td>${row.label}</td>${row.values.map(v => `<td>${v}</td>`).join('')}`;
                 tbody.appendChild(tr);
             });
+            const imgSrc = fit === 'Straight Leg' ? '<?= BASE_URL ?>/pictures/design/pants_1_measures.png' : '<?= BASE_URL ?>/pictures/design/pants_2_measures.png';
+            const img = document.getElementById('sizeChartImg');
+            if (img) {
+                img.src = imgSrc;
+                if (img.parentElement.classList.contains('color-wrapper')) {
+                    const colorLayer = img.parentElement.querySelector('.color-layer');
+                    if (colorLayer) {
+                        colorLayer.style.maskImage = `url("${imgSrc}")`;
+                        colorLayer.style.webkitMaskImage = `url("${imgSrc}")`;
+                    }
+                }
+            }
         }
 
         function updateLabelColors() {

@@ -81,7 +81,7 @@ class CustomerController {
                 $schemaBootstrap->syncCartToDb((int)$user['id'], $dbCart);
                 $_SESSION['cart'] = $dbCart;
 
-                $_SESSION['success'] = "you are sucessfully login";
+                $_SESSION['success'] = "You have successfully logged in.";
 
                 // Redirect to the last visited page if available, otherwise default to resolved route
                 $redirectUrl = $_SESSION['redirect_after_login'] ?? (url("") . "" . ($redirect === 'customer_orders' ? 'home' : $redirect));

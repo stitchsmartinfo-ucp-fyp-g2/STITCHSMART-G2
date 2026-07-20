@@ -394,9 +394,12 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
         text-decoration: none;
         box-shadow: 0 4px 14px rgba(202, 151, 69,0.25);
     }
-    .btn-back-orders:hover {
+    .btn-back-orders:hover,
+    .btn-back-orders:focus,
+    .btn-back-orders:active {
         transform: translateY(-3px);
         box-shadow: 0 8px 25px rgba(202, 151, 69,0.4) !important;
+        color: var(--co-btn-text) !important;
     }
 
     @keyframes fadeInUp {

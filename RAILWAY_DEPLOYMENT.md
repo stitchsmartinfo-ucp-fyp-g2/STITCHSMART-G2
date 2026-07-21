@@ -63,7 +63,7 @@ Railway par containers refresh hote rehte hain. Jab aap admin panel se koi nayi 
 1. Apne **Service A (PHP Web App)** par click karen.
 2. **"Volumes"** tab mein jayein.
 3. **"New Volume"** par click karen.
-4. Mount Path mein exact yeh path likhein: `/app/storage` aur save kar den.
+4. Mount Path mein exact yeh path likhein: `/app/public/uploads` aur save kar den.
 5. Railway khud hi app ko redeploy karega aur iske baad aapki upload ki hui har image pakki (persistent) save hogi, kabhi delete/broken nahi hogi!
 
 ---

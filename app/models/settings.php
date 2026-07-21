@@ -63,7 +63,7 @@ class Banner {
     }
     public function addbanner($alt,$text,$file)
     {
-        $targetDir = BASE_PATH."/public/pictures/banners/";
+        $targetDir = BASE_PATH."/public/uploads/banners/";
 
         $fileExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         $cleanAlt = preg_replace('/[^a-zA-Z0-9_-]/','_',$alt);
@@ -71,7 +71,7 @@ class Banner {
         $fileName = $cleanAlt.".".$fileExt;
 
         $uploadPath = $targetDir.$fileName;
-        $dbPath = "pictures/banners/".$fileName;
+        $dbPath = "uploads/banners/".$fileName;
 
         move_uploaded_file($file['tmp_name'],$uploadPath);
 
@@ -111,7 +111,7 @@ public function updateBanner($id, $alt, $text, $file)
 
     if (isset($file['name']) && $file['name'] != "") {
 
-        $targetDir = BASE_PATH . "/public/pictures/banners/";
+        $targetDir = BASE_PATH . "/public/uploads/banners/";
 
         $fileExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         $cleanAlt = preg_replace('/[^a-zA-Z0-9_-]/','_',$alt);
@@ -119,7 +119,7 @@ public function updateBanner($id, $alt, $text, $file)
         $fileName = $cleanAlt . "." . $fileExt;
 
         $uploadPath = $targetDir . $fileName;
-        $dbPath = "pictures/banners/" . $fileName;
+        $dbPath = "uploads/banners/" . $fileName;
 
         // delete old image
         if ($banner && file_exists(BASE_PATH . "/public/" . $banner['image_url'])) {

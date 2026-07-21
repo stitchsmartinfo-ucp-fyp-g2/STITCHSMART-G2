@@ -128,7 +128,7 @@ require BASE_PATH . '/app/views/admin/layout.php';
                 exit;
             }
 
-            $uploadDir = BASE_PATH . '/public/pictures/category/';
+            $uploadDir = BASE_PATH . '/public/uploads/category/';
 
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
@@ -149,7 +149,7 @@ require BASE_PATH . '/app/views/admin/layout.php';
                     $bannerName = time().'_banner_'.$_FILES['bimage']['name'];
                     $bannerPath = $uploadDir . $bannerName;
                     move_uploaded_file($_FILES['bimage']['tmp_name'], $bannerPath);
-                    $banner = 'pictures/category/' . $bannerName;
+                    $banner = 'uploads/category/' . $bannerName;
                 }
             }
 
@@ -166,7 +166,7 @@ require BASE_PATH . '/app/views/admin/layout.php';
                     $imageName = time().'_cat_'.$_FILES['cimage']['name'];
                     $imagePath = $uploadDir . $imageName;
                     move_uploaded_file($_FILES['cimage']['tmp_name'], $imagePath);
-                    $image = 'pictures/category/' . $imageName;
+                    $image = 'uploads/category/' . $imageName;
                 }
             }
 
@@ -270,7 +270,7 @@ UPDATE CATEGORY
                 exit;
             }
 
-            $uploadDir = BASE_PATH . '/public/pictures/category/';
+            $uploadDir = BASE_PATH . '/public/uploads/category/';
 
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
@@ -288,7 +288,7 @@ UPDATE CATEGORY
                     $bannerName = time().'_banner_'.$_FILES['bimage']['name'];
                     $bannerPath = $uploadDir . $bannerName;
                     move_uploaded_file($_FILES['bimage']['tmp_name'], $bannerPath);
-                    $banner = 'pictures/category/'.$bannerName;
+                    $banner = 'uploads/category/'.$bannerName;
                 }
             }
 
@@ -299,7 +299,7 @@ UPDATE CATEGORY
                     $imageName = time().'_cat_'.$_FILES['cimage']['name'];
                     $imagePath = $uploadDir . $imageName;
                     move_uploaded_file($_FILES['cimage']['tmp_name'], $imagePath);
-                    $image = 'pictures/category/'.$imageName;
+                    $image = 'uploads/category/'.$imageName;
                 }
             }
 

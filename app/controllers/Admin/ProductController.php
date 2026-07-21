@@ -225,7 +225,7 @@ public function featureIndex()
 
         if ($hasImageUpload) {
             $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-            $uploadDir = BASE_PATH . '/public/pictures/products/';
+            $uploadDir = BASE_PATH . '/public/uploads/products/';
             $files = $_FILES['bimage'];
 
             $names = is_array($files['name']) ? $files['name'] : [$files['name']];
@@ -271,7 +271,7 @@ public function featureIndex()
             if (empty($errors)) {
                 foreach ($validUploads as $upload) {
                     $imageName = time() . '_' . uniqid() . '_' . basename($upload['name']);
-                    $relativePath = 'pictures/products/' . $imageName;
+                    $relativePath = 'uploads/products/' . $imageName;
                     if (move_uploaded_file($upload['tmp_name'], $uploadDir . $imageName)) {
                         $imagePaths[] = $relativePath;
                     } else {
@@ -418,7 +418,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
             // handle new image upload
             if ($hasImageUpload) {
                 $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-                $uploadDir = BASE_PATH . '/public/pictures/products/';
+                $uploadDir = BASE_PATH . '/public/uploads/products/';
                 $files = $_FILES['bimage'];
 
                 $names = is_array($files['name']) ? $files['name'] : [$files['name']];
@@ -465,7 +465,7 @@ require BASE_PATH.'/app/views/admin/layout.php';
                     $imagePaths = [];
                     foreach ($validUploads as $upload) {
                         $imageName = time() . '_' . uniqid() . '_' . basename($upload['name']);
-                        $relativePath = 'pictures/products/' . $imageName;
+                        $relativePath = 'uploads/products/' . $imageName;
                         if (move_uploaded_file($upload['tmp_name'], $uploadDir . $imageName)) {
                             $imagePaths[] = $relativePath;
                         } else {

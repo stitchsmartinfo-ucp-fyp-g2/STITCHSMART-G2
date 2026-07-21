@@ -187,7 +187,10 @@ $validatedTheme = in_array($requestedTheme, $allowedThemes, true) ? $requestedTh
                 </div>
             </div>
 
-            <img id="labelPreview" class="dynamic-image mt-4" src="<?= BASE_URL ?>/pictures/design/Label on the back.png" alt="Label Preview">
+            <div id="labelPreviewContainer" style="position: relative; display: inline-block; width: 100%;">
+                <img id="labelPreview" class="dynamic-image mt-4" src="<?= BASE_URL ?>/pictures/design/Label on the back.png" alt="Label Preview" style="width: 100%;">
+                <img id="customLabelOverlay" style="position: absolute; display: none; object-fit: contain; pointer-events: none; z-index: 10;">
+            </div>
             <input type="file" id="labelImage" accept="image/*" class="form-control mt-3" onchange="previewImage('labelImage', 'labelPreview')">
             <textarea class="form-control mt-3" id="labelDescription" rows="2" placeholder="Label design / placement details..."></textarea>
 
@@ -518,16 +521,49 @@ $validatedTheme = in_array($requestedTheme, $allowedThemes, true) ? $requestedTh
                 src = '<?= BASE_URL ?>/pictures/design/Label on the back p1.png';
             }
             document.getElementById('labelPreview').src = src;
+            if (typeof updateLabelOverlayPosition === 'function') updateLabelOverlayPosition();
+        }
+
+        function updateLabelOverlayPosition() {
+            const overlay = document.getElementById('customLabelOverlay');
+            if (!overlay || overlay.style.display === 'none') return;
+            const labelType = document.querySelector('input[name="labelType"]:checked')?.value || 'none';
+            if (labelType === 'inseam') {
+                overlay.style.top = '70%';
+                overlay.style.left = '65%';
+                overlay.style.width = '15%';
+                overlay.style.height = '15%';
+            } else if (labelType === 'back') {
+                overlay.style.top = '15%';
+                overlay.style.left = '42%';
+                overlay.style.width = '16%';
+                overlay.style.height = '16%';
+            } else {
+                overlay.style.display = 'none';
+            }
         }
 
         function previewImage(inputId, previewId) {
             const file = document.getElementById(inputId).files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = e => { document.getElementById(previewId).src = e.target.result; };
+                reader.onload = function(e) {
+                    if (previewId === 'labelPreview') {
+                        const overlay = document.getElementById('customLabelOverlay');
+                        if(overlay) {
+                            overlay.src = e.target.result;
+                            overlay.style.display = 'block';
+                            updateLabelOverlayPosition();
+                        }
+                    } else {
+                        document.getElementById(previewId).src = e.target.result;
+                    }
+                };
                 reader.readAsDataURL(file);
             } else {
                 if(previewId === 'labelPreview') {
+                    const overlay = document.getElementById('customLabelOverlay');
+                    if(overlay) overlay.style.display = 'none';
                     updateLabelPreview();
                 } else {
                     document.getElementById(previewId).src = '<?= BASE_URL ?>/pictures/design/shorts.png';

@@ -469,7 +469,11 @@ require BASE_PATH.'/app/views/admin/layout.php';
                         if (move_uploaded_file($upload['tmp_name'], $uploadDir . $imageName)) {
                             $imagePaths[] = $relativePath;
                         } else {
-                            $errors[] = "Failed to save image {$upload['name']}.";
+                            $errorMsg = "Failed to save image {$upload['name']}.";
+                            if (!is_dir($uploadDir)) $errorMsg .= " (Directory does not exist)";
+                            elseif (!is_writable($uploadDir)) $errorMsg .= " (Directory is not writable)";
+                            else $errorMsg .= " (Unknown move error)";
+                            $errors[] = $errorMsg;
                         }
                     }
 

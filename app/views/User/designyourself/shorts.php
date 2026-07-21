@@ -531,13 +531,14 @@ $validatedTheme = in_array($requestedTheme, $allowedThemes, true) ? $requestedTh
             if (labelType === 'inseam') {
                 overlay.style.top = '70%';
                 overlay.style.left = '65%';
-                overlay.style.width = '15%';
-                overlay.style.height = '15%';
+                overlay.style.width = '10%';
+                overlay.style.height = '10%';
             } else if (labelType === 'back') {
-                overlay.style.top = '15%';
-                overlay.style.left = '42%';
-                overlay.style.width = '16%';
-                overlay.style.height = '16%';
+                overlay.style.top = '55%';
+                overlay.style.left = '45%';
+                overlay.style.width = '10%';
+                overlay.style.height = '6%';
+                overlay.style.objectFit = 'cover';
             } else {
                 overlay.style.display = 'none';
             }

@@ -37,41 +37,28 @@ if ($theme === 'theme-luxury') {
    3D FLIP BUSINESS CARD DESIGN
    ============================================================ */
 body {
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%) !important;
+    background: #fdfcf9 !important; /* Clean, premium off-white */
     font-family: 'Montserrat', sans-serif !important;
 }
 
-/* Premium Background Pattern overlay */
 .w-page {
-    position: relative;
     min-height: 100vh;
 }
-.w-page::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: radial-gradient(#d4af37 0.5px, transparent 0.5px);
-    background-size: 30px 30px;
-    opacity: 0.05;
-    z-index: 0;
-    pointer-events: none;
-}
-.w-header, .container {
-    position: relative;
-    z-index: 1;
-}
 
+/* Premium Header */
 .w-header {
-    background: var(--co-header-bg, #fff);
-    border-bottom: 1px solid var(--co-border, #eaeaea);
-    padding: 30px 0;
-    margin-bottom: 40px;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding: 50px 0;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
 }
 .w-header-title {
     font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
+    font-size: 2.8rem;
     font-weight: 700;
-    color: var(--co-text-h, #111);
+    color: #111;
+    margin-bottom: 10px;
 }
 
 /* FLIP CONTAINER */
@@ -300,13 +287,16 @@ body {
 <body>
 <div class="w-page">
     
-    <div class="w-header">
+    <div class="w-header text-center">
         <div class="container">
-            <a href="<?= url('customer_orders') ?>" class="text-decoration-none text-muted mb-2 d-inline-block" style="font-size:0.9rem;">
-                <i class="bi bi-arrow-left"></i> Back to Orders
-            </a>
             <h1 class="w-header-title">My Digital Warranty Cards</h1>
-            <p class="text-muted">Hover over a card to view your coverage details.</p>
+            <p class="text-muted" style="letter-spacing: 1px; font-size: 0.95rem; text-transform: uppercase;">Hover over a card to view your coverage details</p>
+            <div style="width: 60px; height: 3px; background: <?= $cardDark ?>; margin: 20px auto 0;"></div>
+            <div class="mt-4">
+                <a href="<?= url('customer_orders') ?>" class="text-decoration-none text-muted d-inline-block" style="font-size:0.85rem; border: 1px solid #ddd; padding: 8px 20px; border-radius: 50px; transition: all 0.3s;" onmouseover="this.style.background='#222'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#6c757d';">
+                    <i class="bi bi-arrow-left"></i> Back to Orders
+                </a>
+            </div>
         </div>
     </div>
 

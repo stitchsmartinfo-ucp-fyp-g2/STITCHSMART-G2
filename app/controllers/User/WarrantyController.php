@@ -43,11 +43,16 @@ class WarrantyController
                 }
             }
 
-            if ($this->warrantyModel->submitClaim($warrantyId, $description, $imageUrl)) {
-                $_SESSION['success_message'] = "Your warranty claim has been submitted successfully.";
-            } else {
-                $_SESSION['error_message'] = "Failed to submit warranty claim.";
+            try {
+                if ($this->warrantyModel->submitClaim($warrantyId, $description, $imageUrl)) {
+                    $_SESSION['success_message'] = "Your warranty claim has been submitted successfully.";
+                } else {
+                    $_SESSION['error_message'] = "Failed to submit warranty claim.";
+                }
+            } catch (Exception $e) {
+                $_SESSION['error_message'] = "An error occurred while submitting your claim: " . $e->getMessage();
             }
+
             header('Location: ' . url('my_warranties'));
             exit;
         }

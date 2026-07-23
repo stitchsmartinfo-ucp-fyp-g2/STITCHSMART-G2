@@ -92,28 +92,45 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
     margin-bottom: 24px !important;
 }
 .co-page .co-breadcrumb {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
-    gap: 7px !important;
-    font-size: 0.82rem !important;
-    color: var(--co-breadcrumb) !important;
-    margin-bottom: 10px !important;
+    gap: 10px !important;
+    font-size: 0.85rem !important;
+    color: var(--co-text-muted) !important;
+    margin-bottom: 20px !important;
+    background: var(--co-pill-bg) !important;
+    padding: 8px 20px !important;
+    border-radius: 50px !important;
+    border: 1px solid var(--co-border) !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
 }
 .co-page .co-breadcrumb a {
-    color: var(--co-breadcrumb) !important;
-    text-decoration: none !important;
-    transition: color 0.2s !important;
-    font-size: 0.82rem !important;
-}
-.co-page .co-breadcrumb a:hover { color: var(--co-accent) !important; }
-.co-page .co-breadcrumb span {
     color: var(--co-text-body) !important;
-    font-size: 0.82rem !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.85rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+.co-page .co-breadcrumb a i {
+    color: var(--co-accent) !important;
+    font-size: 1rem !important;
+}
+.co-page .co-breadcrumb a:hover {
+    color: var(--co-accent) !important;
+    transform: translateY(-1px) !important;
+}
+.co-page .co-breadcrumb span {
+    color: var(--co-text-h) !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
 }
 .co-page .co-breadcrumb i.bi-chevron-right {
-    font-size: 0.55rem !important;
-    opacity: 0.6 !important;
-    color: var(--co-breadcrumb) !important;
+    font-size: 0.6rem !important;
+    opacity: 0.5 !important;
+    color: var(--co-text-muted) !important;
 }
 
 .co-page .co-header-row {

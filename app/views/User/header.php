@@ -170,9 +170,6 @@ if (isset($_SESSION['cart'])) {
                             <a href="<?= url('customer_orders'); ?>" class="btn btn-action btn-unified" title="View Orders">
                                 <i class="bi bi-box-seam me-2"></i> Orders
                             </a>
-                            <a href="<?= url('my_warranties'); ?>" class="btn btn-action btn-unified" title="My Warranties">
-                                <i class="bi bi-shield-check me-2"></i> Warranties
-                            </a>
                         <?php endif; ?>
                     </div>
                     

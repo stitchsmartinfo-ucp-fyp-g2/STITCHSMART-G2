@@ -590,9 +590,14 @@ $themeFile = ($theme === 'theme-luxury') ? 'theme-luxury-frontend.css' : 'theme-
                 <h1 class="co-header-title">Order History</h1>
                 <p class="co-header-sub">Track and manage all your purchases</p>
             </div>
-            <a href="<?= url('allproducts') ?>" class="co-btn co-btn-primary">
-                <i class="bi bi-bag-heart-fill"></i> Continue Shopping
-            </a>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <a href="<?= url('my_warranties') ?>" class="co-btn" style="background: var(--co-accent-soft); color: var(--co-accent-dark); border: 1px solid var(--co-accent-soft);">
+                    <i class="bi bi-shield-check"></i> My Warranties
+                </a>
+                <a href="<?= url('allproducts') ?>" class="co-btn co-btn-primary">
+                    <i class="bi bi-bag-heart-fill"></i> Continue Shopping
+                </a>
+            </div>
         </div>
     </div>
 </div>

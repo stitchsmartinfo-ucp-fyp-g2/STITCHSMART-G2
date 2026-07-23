@@ -11,17 +11,16 @@ class WarrantyController
         $this->warrantyModel = new Warranty($conn);
         
         // Ensure user is logged in
-        if (empty($_SESSION['customer_logged_in']) || empty($_SESSION['user_id'])) {
+        if (empty($_SESSION['customer_logged_in']) || empty($_SESSION['customer_id'])) {
             header('Location: ' . url('customer_login'));
             exit;
         }
     }
 
-    public function index()
-    {
-        $userId = (int)$_SESSION['user_id'];
-        $warranties = $this->warrantyModel->getUserWarranties($userId);
-        $claims = $this->warrantyModel->getUserClaims($userId);
+    public function customerWarranties() {
+        $customerId = (int)$_SESSION['customer_id'];
+        $warranties = $this->warrantyModel->getUserWarranties($customerId);
+        $claims = $this->warrantyModel->getUserClaims($customerId);
         require_once __DIR__ . '/../../views/User/warranties.php';
     }
 
@@ -31,7 +30,7 @@ class WarrantyController
             $warrantyId = (int)$_POST['warranty_id'];
             $description = htmlspecialchars($_POST['description'] ?? '');
             
-            // Image Upload Handling (simplified)
+            // Image Upload Handling
             $imageUrl = null;
             if (isset($_FILES['claim_image']) && $_FILES['claim_image']['error'] === UPLOAD_ERR_OK) {
                 $targetDir = __DIR__ . '/../../../public/pictures/claims/';

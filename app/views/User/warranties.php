@@ -378,21 +378,12 @@ body {
         <div class="hero-curve"></div>
         <div class="container hero-content">
             <div class="row align-items-center">
-                <!-- Left Side Content -->
                 <div class="col-lg-5 mb-5 mb-lg-0">
                     <h1 class="hero-title">1 Year<br>Warranty</h1>
                     <div class="hero-subtitle">Welcome to our site</div>
                     <p class="hero-text">
                         Experience peace of mind with our premium digital warranty system. We stand by the quality of our craftsmanship, offering comprehensive coverage for your bespoke garments.
                     </p>
-                    
-                    <a href="#claim-section" class="btn px-4 py-2 mb-4" style="border: 1px solid <?= $cardAccent ?>; color: <?= $cardAccent ?>; border-radius: 50px; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">READ MORE &rarr;</a>
-                    
-                    <div class="hero-icons">
-                        <div class="hero-icon-box"><i class="bi bi-bar-chart-fill"></i></div>
-                        <div class="hero-icon-box"><i class="bi bi-pie-chart-fill"></i></div>
-                        <div class="hero-icon-box"><i class="bi bi-check-lg"></i></div>
-                    </div>
                 </div>
                 
                 <!-- Right Side Card (Shows the latest warranty, or placeholder) -->

@@ -95,6 +95,12 @@ class Warranty
 
     public function updateClaimStatus(int $claimId, string $status, string $adminNotes): bool
     {
+        // Safety check: ensure admin_notes column exists
+        $checkCol = $this->conn->query("SHOW COLUMNS FROM warranty_claims LIKE 'admin_notes'");
+        if ($checkCol && $checkCol->num_rows === 0) {
+            $this->conn->query("ALTER TABLE warranty_claims ADD COLUMN admin_notes TEXT AFTER status");
+        }
+
         $stmt = $this->conn->prepare("UPDATE warranty_claims SET status = ?, admin_notes = ? WHERE id = ?");
         if (!$stmt) return false;
 

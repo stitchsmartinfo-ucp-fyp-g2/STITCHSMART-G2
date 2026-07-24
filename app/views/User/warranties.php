@@ -550,7 +550,7 @@ body {
                           <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content overflow-hidden border-0" style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
                               <div class="modal-header" style="background: <?= $cardAccent ?>; color: <?= $cardDark ?>; border-bottom: none;">
-                                <h5 class="modal-title fw-bold" style="letter-spacing: 1px;"><i class="bi bi-tools me-2"></i> CLAIM WARRANTY</h5>
+                                <h5 class="modal-title fw-bold" style="letter-spacing: 1px; color: <?= $cardDark ?> !important;"><i class="bi bi-tools me-2" style="color: <?= $cardDark ?> !important;"></i> CLAIM WARRANTY</h5>
                                 <button type="button" class="btn-close" style="filter: invert(1) sepia(1) saturate(5) hue-rotate(5deg);" data-bs-dismiss="modal"></button>
                               </div>
                               <form action="<?= url('submit_warranty_claim') ?>" method="POST" enctype="multipart/form-data" onsubmit="return validateFileSize(this)">

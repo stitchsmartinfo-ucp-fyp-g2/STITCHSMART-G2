@@ -71,7 +71,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
     <label class="form-label mb-0 fw-bold">Category Description</label>
-    <button type="button" onclick="generateCategoryAI(this)" class="btn btn-success btn-sm">✨ Generate with AI</button>
+    <button type="button" onclick="generateCategoryAI(this)" class="btn btn-sm" style="background-color: #111 !important; color: #ca9745 !important; border: 1px solid #ca9745 !important; font-weight: bold;">✨ Generate with AI</button>
 </div>
 <div id="ai-error-container"></div>
 <div class="mb-3">

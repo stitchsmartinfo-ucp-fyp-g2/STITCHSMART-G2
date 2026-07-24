@@ -63,7 +63,7 @@
 <div class="col-md-5"> 
     <div class="d-flex justify-content-between align-items-center mb-4 px-2 py-1 bg-success rounded">
         <h3 class="text-white mb-0" style="font-size: 1.2rem;">SEO Setting</h3>
-        <button type="button" onclick="generateSEOWithAI()" class="btn btn-sm btn-light" id="aiBtn">✨ Generate SEO with AI</button>
+        <button type="button" onclick="generateSEOWithAI()" class="btn btn-sm" id="aiBtn" style="background-color: #111 !important; color: #ca9745 !important; border: 1px solid #ca9745 !important; font-weight: bold;">✨ Generate SEO with AI</button>
     </div>
     <div id="ai-error-container"></div>
 

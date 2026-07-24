@@ -91,7 +91,7 @@
 
                     <!-- 4. Generate with AI section -->
                     <div class="col-12 text-center">
-                        <button type="button" id="aiBtn" onclick="analyzeImage()" class="btn btn-sm btn-success">
+                        <button type="button" id="aiBtn" onclick="analyzeImage()" class="btn btn-sm" style="background-color: #111 !important; color: #ca9745 !important; border: 1px solid #ca9745 !important; font-weight: bold;">
                             ✨ Generate with AI
                         </button>
                         <span id="loader" style="display:none; margin-left:10px;">
